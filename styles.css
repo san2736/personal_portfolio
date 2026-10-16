@@ -391,6 +391,86 @@ a {
   border-color: var(--giallo);
 }
 
+/* Car number, painted on the bodywork */
+.livery__number {
+  position: absolute;
+  z-index: -1;
+  top: clamp(0.5rem, 3cqi, 2rem);
+  right: clamp(1rem, 5cqi, 3.5rem);
+  font-weight: 900;
+  font-size: clamp(5rem, 22cqi, 13rem);
+  line-height: 0.8;
+  color: var(--giallo);
+  transform: skewX(-9deg);
+  user-select: none;
+}
+
+@container (max-width: 36rem) {
+  .livery__number {
+    font-size: 40cqi;
+  }
+}
+
+/* ---------- Tap to start ---------- */
+
+.gate {
+  display: none;
+}
+
+.awaiting .gate {
+  position: absolute;
+  inset: 0;
+  top: 9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 var(--gutter) 4rem;
+  text-align: center;
+}
+
+.gate__lead {
+  margin: 0;
+  max-width: 24rem;
+  font-size: 1.1rem;
+  color: var(--steel);
+}
+
+.gate__go {
+  padding: 1rem 2.25rem;
+  font: inherit;
+  font-weight: 900;
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  color: var(--chalk);
+  background: var(--rosso);
+  border: 0;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.15), 0 14px 36px -12px rgb(212 0 0 / 0.7);
+  cursor: pointer;
+  transform: skewX(-9deg);
+}
+
+.gate__go:hover {
+  background: var(--rosso-deep);
+}
+
+.gate__quiet {
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.98rem;
+  color: var(--steel);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.gate__quiet:hover {
+  color: var(--chalk);
+}
+
 /* The start sequence: the red bodywork stays hidden until the lights go out. */
 .pre-start .livery {
   clip-path: inset(0 100% 0 0);
@@ -401,7 +481,7 @@ a {
   transition: clip-path 0.75s cubic-bezier(0.7, 0, 0.2, 1);
 }
 
-.pre-start .grid {
+.pre-start:not(.awaiting) .grid {
   cursor: pointer;
 }
 

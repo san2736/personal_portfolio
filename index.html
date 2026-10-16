@@ -17,14 +17,14 @@
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var seen = false;
         try { seen = sessionStorage.getItem('lightsOut') === '1'; } catch (e) {}
-        if (!reduce && !seen) document.documentElement.classList.add('pre-start');
+        if (!reduce && !seen) document.documentElement.classList.add('pre-start', 'awaiting');
       })();
     </script>
   </head>
   <body>
     <!-- Navigation, styled as the F1 timing tower -->
     <nav class="tower" aria-label="Sections">
-      <a class="tower__head" href="#top"><span class="tower__code">KAT</span></a>
+      <a class="tower__head" href="#top"><span class="tower__code">SAN</span></a>
       <ol class="tower__list">
         <li><a class="tower__row" href="#practice" data-spy="practice"><span class="tower__short">FP</span><span class="tower__name">About me</span></a></li>
         <li><a class="tower__row" href="#qualifying" data-spy="qualifying"><span class="tower__short">Q</span><span class="tower__name">Skills</span></a></li>
@@ -43,9 +43,18 @@
           <div class="gantry__col"><span class="lamp"></span><span class="lamp"></span></div>
         </div>
 
+        <!-- Shown once per visit: browsers only allow sound after a tap, so the start waits for one -->
+        <div class="gate">
+          <p class="gate__lead">Formation lap complete. Car 27 is on the grid.</p>
+          <button class="gate__go" type="button" data-start="sound">Start the race</button>
+          <button class="gate__quiet" type="button" data-start="quiet">Start without sound</button>
+        </div>
+        <audio src="sounds/start.mp3" preload="auto" data-start-audio></audio>
+
         <div class="livery">
+          <span class="livery__number" aria-hidden="true">27</span>
           <p class="livery__tag">
-            <span class="livery__code">KAT</span>
+            <span class="livery__code">SAN</span>
             <span>Data science, Mumbai</span>
           </p>
           <h1 class="livery__name">
@@ -53,8 +62,8 @@
             <span>Katpitia</span>
           </h1>
           <p class="livery__line">
-            I like the whole journey of data: the database it lives in, the statistics that test it, and the
-            dashboard that finally explains it. Off the clock, I'm painting, singing or watching a red car try to win on Sunday.
+            Data scientist in the making. Python, SQL, statistics, database design and Power BI and Tableau
+            dashboards on weekdays; Formula 1 on race weekends.
           </p>
           <div class="livery__controls">
             <button class="livery__btn" type="button" data-replay>Watch the start again</button>
