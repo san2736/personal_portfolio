@@ -346,8 +346,16 @@ a {
   line-height: 1.55;
 }
 
-.livery__replay {
-  align-self: flex-start;
+.livery__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.livery__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.55rem 1rem;
   font: inherit;
   font-weight: 700;
@@ -359,8 +367,28 @@ a {
   cursor: pointer;
 }
 
-.livery__replay:hover {
+.livery__btn:hover {
   background: rgb(0 0 0 / 0.45);
+}
+
+.livery__icon {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.livery__btn--sound .wave,
+.livery__btn--sound[aria-pressed='true'] .mute {
+  display: none;
+}
+
+.livery__btn--sound[aria-pressed='true'] .wave {
+  display: inline;
+}
+
+.livery__btn--sound[aria-pressed='true'] {
+  color: var(--carbon);
+  background: var(--giallo);
+  border-color: var(--giallo);
 }
 
 /* The start sequence: the red bodywork stays hidden until the lights go out. */
@@ -382,7 +410,7 @@ a {
     scroll-behavior: auto;
   }
 
-  .livery__replay {
+  [data-replay] {
     display: none;
   }
 

@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sanaz Katpitia</title>
-    <meta name="description" content="Sanaz Katpitia, data science student in Mumbai. Scrapers, pipelines, dashboards, Formula 1, painting and music." />
+    <meta name="description" content="Sanaz Katpitia, data science student in Mumbai. Databases, statistics, dashboards, Formula 1, painting and music." />
     <meta name="theme-color" content="#D40000" />
     <meta property="og:title" content="Sanaz Katpitia" />
-    <meta property="og:description" content="Data science student in Mumbai. Scrapers, pipelines, dashboards, Formula 1, painting and music." />
+    <meta property="og:description" content="Data science student in Mumbai. Databases, statistics, dashboards, Formula 1, painting and music." />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="stylesheet" href="styles.css" />
@@ -53,10 +53,20 @@
             <span>Katpitia</span>
           </h1>
           <p class="livery__line">
-            I turn messy web pages into clean tables, and clean tables into something you can read at a glance.
-            When I'm not doing that, I'm painting, singing or watching a red car try to win on Sunday.
+            I like the whole journey of data: the database it lives in, the statistics that test it, and the
+            dashboard that finally explains it. Off the clock, I'm painting, singing or watching a red car try to win on Sunday.
           </p>
-          <button class="livery__replay" type="button" data-replay>Watch the start again</button>
+          <div class="livery__controls">
+            <button class="livery__btn" type="button" data-replay>Watch the start again</button>
+            <button class="livery__btn livery__btn--sound" type="button" data-sound aria-pressed="false">
+              <svg class="livery__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" />
+                <path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path class="mute" d="M16.5 9.5l5 5m0-5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <span data-sound-label>Engine sound off</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -70,8 +80,14 @@
           <div class="practice__text">
             <p>
               I'm Sanaz, a B.Tech Data Science student at NMIMS MPSTME in Mumbai, with a Diploma in Computer Science
-              already behind me. Most of what I build is in Python and SQL: scrapers that collect prices and regulatory
-              orders from the web, pipelines that clean them up, and dashboards that make the numbers make sense.
+              already behind me. I work mostly in Python and SQL, and I enjoy every stage of a data problem: designing
+              a database that keeps records honest, cleaning and testing the data with proper statistics, and turning
+              the result into a Power BI or Tableau dashboard that someone can actually act on.
+            </p>
+            <p>
+              Lately I've been deep in probability, building Markov chain models of real-world trends for my Stochastic
+              Processes course. I also like making tools people use: I led the team behind Find Your Faculty, a campus
+              web app that tells students where their professors are and when they're free.
             </p>
             <p>
               Away from the laptop I paint, I sing, and I play chess. I'm also a UCMAS mental arithmetic graduate, so
@@ -84,6 +100,7 @@
             <div><dt>Studying</dt><dd>B.Tech Data Science, NMIMS MPSTME (2022 to now)</dd></div>
             <div><dt>Before that</dt><dd>Diploma in Computer Science</dd></div>
             <div><dt>Personal bests</dt><dd>3.89/4.00 CGPA, 100% in ICSE Mathematics</dd></div>
+            <div><dt>Currently into</dt><dd>Markov chains and stochastic processes</dd></div>
             <div><dt>Team colours</dt><dd><span class="swatch" aria-hidden="true"></span>Rosso corsa</dd></div>
           </dl>
         </div>
@@ -111,31 +128,42 @@
             </ul>
           </div>
           <div class="sheet__row">
-            <h3 class="sheet__group">Data</h3>
+            <h3 class="sheet__group">Databases</h3>
             <ul class="sheet__items">
-              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Pandas<span class="sr-only"> (strongest)</span></li>
-              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>NumPy<span class="sr-only"> (comfortable)</span></li>
-              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Scikit-learn<span class="sr-only"> (comfortable)</span></li>
-              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Statsmodels<span class="sr-only"> (comfortable)</span></li>
-              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Data cleaning and deduplication<span class="sr-only"> (strongest)</span></li>
-              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Relational schema design<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Database design (DBMS)<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Relational schemas and normalisation<span class="sr-only"> (strongest)</span></li>
               <li class="chip"><span class="pace pace--yellow" aria-hidden="true"></span>PostgreSQL<span class="sr-only"> (learning)</span></li>
             </ul>
           </div>
           <div class="sheet__row">
-            <h3 class="sheet__group">Web and tools</h3>
+            <h3 class="sheet__group">Statistics and modelling</h3>
             <ul class="sheet__items">
-              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Web scraping<span class="sr-only"> (strongest)</span></li>
-              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>REST APIs<span class="sr-only"> (comfortable)</span></li>
-              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Git<span class="sr-only"> (comfortable)</span></li>
-              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Streamlit<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Pandas<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>NumPy<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Data cleaning<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Hypothesis testing<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Regression<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Statsmodels<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Scikit-learn<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--yellow" aria-hidden="true"></span>Markov chains<span class="sr-only"> (learning)</span></li>
             </ul>
           </div>
           <div class="sheet__row">
             <h3 class="sheet__group">Visualisation</h3>
             <ul class="sheet__items">
               <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Power BI<span class="sr-only"> (strongest)</span></li>
-              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Tableau<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Tableau<span class="sr-only"> (strongest)</span></li>
+            </ul>
+          </div>
+          <div class="sheet__row">
+            <h3 class="sheet__group">Building things</h3>
+            <ul class="sheet__items">
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Web apps<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Data structures in C++<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Web scraping<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Streamlit<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>REST APIs<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Git<span class="sr-only"> (comfortable)</span></li>
             </ul>
           </div>
           <div class="sheet__row">
