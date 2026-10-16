@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sanaz Katpitia</title>
+    <meta name="description" content="Sanaz Katpitia, data science student in Mumbai. Scrapers, pipelines, dashboards, Formula 1, painting and music." />
+    <meta name="theme-color" content="#D40000" />
+    <meta property="og:title" content="Sanaz Katpitia" />
+    <meta property="og:description" content="Data science student in Mumbai. Scrapers, pipelines, dashboards, Formula 1, painting and music." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Decide before first paint whether the start sequence should run, so nothing flashes. -->
+    <script>
+      (function () {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var seen = false;
+        try { seen = sessionStorage.getItem('lightsOut') === '1'; } catch (e) {}
+        if (!reduce && !seen) document.documentElement.classList.add('pre-start');
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Navigation, styled as the F1 timing tower -->
+    <nav class="tower" aria-label="Sections">
+      <a class="tower__head" href="#top"><span class="tower__code">KAT</span></a>
+      <ol class="tower__list">
+        <li><a class="tower__row" href="#practice" data-spy="practice"><span class="tower__short">FP</span><span class="tower__name">About me</span></a></li>
+        <li><a class="tower__row" href="#qualifying" data-spy="qualifying"><span class="tower__short">Q</span><span class="tower__name">Skills</span></a></li>
+        <li><a class="tower__row" href="#radio" data-spy="radio"><span class="tower__short">TR</span><span class="tower__name">Contact</span></a></li>
+      </ol>
+    </nav>
+
+    <main id="top">
+      <!-- Hero: five start lights, then the livery -->
+      <header class="grid">
+        <div class="gantry" aria-hidden="true">
+          <div class="gantry__col"><span class="lamp"></span><span class="lamp"></span></div>
+          <div class="gantry__col"><span class="lamp"></span><span class="lamp"></span></div>
+          <div class="gantry__col"><span class="lamp"></span><span class="lamp"></span></div>
+          <div class="gantry__col"><span class="lamp"></span><span class="lamp"></span></div>
+          <div class="gantry__col"><span class="lamp"></span><span class="lamp"></span></div>
+        </div>
+
+        <div class="livery">
+          <p class="livery__tag">
+            <span class="livery__code">KAT</span>
+            <span>Data science, Mumbai</span>
+          </p>
+          <h1 class="livery__name">
+            <span>Sanaz</span>
+            <span>Katpitia</span>
+          </h1>
+          <p class="livery__line">
+            I turn messy web pages into clean tables, and clean tables into something you can read at a glance.
+            When I'm not doing that, I'm painting, singing or watching a red car try to win on Sunday.
+          </p>
+          <button class="livery__replay" type="button" data-replay>Watch the start again</button>
+        </div>
+      </header>
+
+      <!-- Practice: about me -->
+      <section id="practice" class="session" aria-labelledby="practice-title">
+        <div class="session__head">
+          <p class="session__kind">Free practice</p>
+          <h2 id="practice-title">About me</h2>
+        </div>
+        <div class="practice">
+          <div class="practice__text">
+            <p>
+              I'm Sanaz, a B.Tech Data Science student at NMIMS MPSTME in Mumbai, with a Diploma in Computer Science
+              already behind me. Most of what I build is in Python and SQL: scrapers that collect prices and regulatory
+              orders from the web, pipelines that clean them up, and dashboards that make the numbers make sense.
+            </p>
+            <p>
+              Away from the laptop I paint, I sing, and I play chess. I'm also a UCMAS mental arithmetic graduate, so
+              I will usually have done the sum before the calculator opens. And on race weekends, the timing screen is
+              the most important window on my desktop.
+            </p>
+          </div>
+          <dl class="card">
+            <div><dt>Base</dt><dd>Mumbai</dd></div>
+            <div><dt>Studying</dt><dd>B.Tech Data Science, NMIMS MPSTME (2022 to now)</dd></div>
+            <div><dt>Before that</dt><dd>Diploma in Computer Science</dd></div>
+            <div><dt>Personal bests</dt><dd>3.89/4.00 CGPA, 100% in ICSE Mathematics</dd></div>
+            <div><dt>Team colours</dt><dd><span class="swatch" aria-hidden="true"></span>Rosso corsa</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- Qualifying: skills, coloured like timing-screen sectors -->
+      <section id="qualifying" class="session" aria-labelledby="qualifying-title">
+        <div class="session__head">
+          <p class="session__kind">Qualifying</p>
+          <h2 id="qualifying-title">Skills</h2>
+        </div>
+        <ul class="legend" aria-label="What the colours mean">
+          <li><span class="pace pace--purple" aria-hidden="true"></span>Fastest, what I reach for first</li>
+          <li><span class="pace pace--green" aria-hidden="true"></span>Comfortable and dependable</li>
+          <li><span class="pace pace--yellow" aria-hidden="true"></span>Still finding time</li>
+        </ul>
+        <!-- Pace colours: pace--purple = strongest, pace--green = comfortable, pace--yellow = learning -->
+        <div class="sheet">
+          <div class="sheet__row">
+            <h3 class="sheet__group">Languages</h3>
+            <ul class="sheet__items">
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Python<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>SQL<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>C++<span class="sr-only"> (comfortable)</span></li>
+            </ul>
+          </div>
+          <div class="sheet__row">
+            <h3 class="sheet__group">Data</h3>
+            <ul class="sheet__items">
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Pandas<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>NumPy<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Scikit-learn<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Statsmodels<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Data cleaning and deduplication<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Relational schema design<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--yellow" aria-hidden="true"></span>PostgreSQL<span class="sr-only"> (learning)</span></li>
+            </ul>
+          </div>
+          <div class="sheet__row">
+            <h3 class="sheet__group">Web and tools</h3>
+            <ul class="sheet__items">
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Web scraping<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>REST APIs<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Git<span class="sr-only"> (comfortable)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Streamlit<span class="sr-only"> (comfortable)</span></li>
+            </ul>
+          </div>
+          <div class="sheet__row">
+            <h3 class="sheet__group">Visualisation</h3>
+            <ul class="sheet__items">
+              <li class="chip"><span class="pace pace--purple" aria-hidden="true"></span>Power BI<span class="sr-only"> (strongest)</span></li>
+              <li class="chip"><span class="pace pace--green" aria-hidden="true"></span>Tableau<span class="sr-only"> (comfortable)</span></li>
+            </ul>
+          </div>
+          <div class="sheet__row">
+            <h3 class="sheet__group">Off track</h3>
+            <ul class="sheet__items">
+              <li class="chip chip--plain">Formula 1</li>
+              <li class="chip chip--plain">Painting</li>
+              <li class="chip chip--plain">Singing</li>
+              <li class="chip chip--plain">Chess</li>
+              <li class="chip chip--plain">Mental arithmetic</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Team radio: contact -->
+      <section id="radio" class="session" aria-labelledby="radio-title">
+        <div class="session__head">
+          <p class="session__kind">Team radio</p>
+          <h2 id="radio-title">Contact</h2>
+        </div>
+        <figure class="radio">
+          <figcaption class="radio__who">Sanaz</figcaption>
+          <blockquote class="radio__msg">
+            <p>If you want to talk data, Formula 1 or anything in between, the inbox is open. Copy?</p>
+          </blockquote>
+        </figure>
+        <ul class="channels">
+          <li>
+            <a class="channel" href="mailto:sanazkatpitia@gmail.com">
+              <span class="channel__label">Email</span>
+              <span class="channel__value">sanazkatpitia@gmail.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="channel" href="https://www.linkedin.com/in/sanaz-katpitia-833669247" target="_blank" rel="noopener noreferrer">
+              <span class="channel__label">LinkedIn</span>
+              <span class="channel__value">sanaz-katpitia</span>
+            </a>
+          </li>
+          <li>
+            <a class="channel" href="https://github.com/san2736" target="_blank" rel="noopener noreferrer">
+              <span class="channel__label">GitHub</span>
+              <span class="channel__value">san2736</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <footer class="foot">
+        <p>Designed and built by Sanaz in HTML, CSS and JavaScript, hosted on GitHub Pages.</p>
+        <p><a href="https://github.com/san2736/personal_portfolio" target="_blank" rel="noopener noreferrer">Source code</a></p>
+      </footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
