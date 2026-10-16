@@ -26,8 +26,9 @@
     <nav class="tower" aria-label="Sections">
       <a class="tower__head" href="#top"><span class="tower__code">SAN</span></a>
       <ol class="tower__list">
-        <li><a class="tower__row" href="#practice" data-spy="practice"><span class="tower__short">FP</span><span class="tower__name">About me</span></a></li>
+        <li><a class="tower__row" href="#practice" data-spy="practice"><span class="tower__short">FP</span><span class="tower__name">About</span></a></li>
         <li><a class="tower__row" href="#qualifying" data-spy="qualifying"><span class="tower__short">Q</span><span class="tower__name">Skills</span></a></li>
+        <li><a class="tower__row" href="#race" data-spy="race"><span class="tower__short">R</span><span class="tower__name">Projects</span></a></li>
         <li><a class="tower__row" href="#radio" data-spy="radio"><span class="tower__short">TR</span><span class="tower__name">Contact</span></a></li>
       </ol>
     </nav>
@@ -186,6 +187,101 @@
             </ul>
           </div>
         </div>
+      </section>
+
+      <!-- Race: projects -->
+      <section id="race" class="session" aria-labelledby="race-title">
+        <div class="session__head">
+          <p class="session__kind">Race</p>
+          <h2 id="race-title">Projects</h2>
+        </div>
+
+        <h3 class="race__heading">Podium</h3>
+        <ol class="podium">
+          <li class="podium__place podium__place--p1">
+            <article class="podium__card">
+              <h4 class="podium__title">SEBI Compliance &amp; Enforcement Analysis</h4>
+              <p class="podium__question">What do SEBI&rsquo;s penalty orders reveal about enforcement in Indian markets?</p>
+              <p>I wrote Python scrapers to pull SEBI regulatory orders and tables off the web, cleaned the messy, semi-structured text (missing fields, inconsistent dates, duplicate penalty records) into structured tables, and analysed compliance and enforcement trends in Power BI.</p>
+              <ul class="podium__tech" aria-label="Tools used"><li class="chip chip--plain">Python</li><li class="chip chip--plain">Web scraping</li><li class="chip chip--plain">Pandas</li><li class="chip chip--plain">Power BI</li></ul>
+            </article>
+            <div class="podium__step" aria-hidden="true">P1</div>
+            <p class="sr-only">Position 1</p>
+          </li>
+          <li class="podium__place podium__place--p2">
+            <article class="podium__card">
+              <h4 class="podium__title">Student Spending Survey Analytics</h4>
+              <p class="podium__question">What actually drives how much students spend, and how often they go out?</p>
+              <p>I cleaned the raw survey data (anomalies, duplicate entries, categorical encoding), then used hypothesis testing and regression to find the main drivers of spending and outing frequency across different groups of students.</p>
+              <ul class="podium__tech" aria-label="Tools used"><li class="chip chip--plain">Python</li><li class="chip chip--plain">Pandas</li><li class="chip chip--plain">Statsmodels</li><li class="chip chip--plain">Scikit-learn</li></ul>
+            </article>
+            <div class="podium__step" aria-hidden="true">P2</div>
+            <p class="sr-only">Position 2</p>
+          </li>
+          <li class="podium__place podium__place--p3">
+            <article class="podium__card">
+              <h4 class="podium__title">Smart SRA Monitoring System</h4>
+              <p class="podium__question">Keeping Mumbai&rsquo;s slum rehabilitation homes with the families they were meant for.</p>
+              <p>As lead developer, I designed the relational database that tracks slum rehabilitation beneficiaries, with the data model built around preventing illegal ownership transfers.</p>
+              <ul class="podium__tech" aria-label="Tools used"><li class="chip chip--plain">SQL</li><li class="chip chip--plain">Database design</li><li class="chip chip--plain">Relational modelling</li></ul>
+            </article>
+            <div class="podium__step" aria-hidden="true">P3</div>
+            <p class="sr-only">Position 3</p>
+          </li>
+        </ol>
+
+        <h3 class="race__heading">Classified</h3>
+        <ol class="results" start="4">
+          <li class="result">
+            <span class="result__pos" aria-hidden="true">P4</span>
+            <div class="result__body">
+              <h4 class="result__title">Find Your Faculty</h4>
+              <p class="result__role">Project lead</p>
+              <p>A campus web app that tells students where their professors are and when they&rsquo;re free. I led the team that designed and deployed it, and worked on both the front-end pages and the back-end scheduling logic.</p>
+              <ul class="podium__tech" aria-label="Tools used"><li class="chip chip--plain">Python</li><li class="chip chip--plain">Web app</li><li class="chip chip--plain">Database</li></ul>
+            </div>
+          </li>
+          <li class="result">
+            <span class="result__pos" aria-hidden="true">P5</span>
+            <div class="result__body">
+              <h4 class="result__title">Spotify Interactive Dashboard</h4>
+              <p class="result__role">Data analyst</p>
+              <p>An interactive Power BI dashboard of listening trends, genre popularity and streaming metrics, so you can explore user preferences and track popularity across genres.</p>
+              <ul class="podium__tech" aria-label="Tools used"><li class="chip chip--plain">Power BI</li><li class="chip chip--plain">Data visualisation</li></ul>
+            </div>
+          </li>
+        </ol>
+
+        <h3 class="race__heading">Still racing</h3>
+        <ul class="results results--live">
+          <li class="result">
+            <span class="result__live" aria-hidden="true"></span>
+            <div class="result__body">
+              <h4 class="result__title">Portfolio Rebalancing &amp; Asset Allocation Engine</h4>
+              <p class="result__role">In progress</p>
+              <p>Ingests and aligns historical Nifty 500, bond yield, VIX and FX data, scores and ranks mutual funds for conservative, moderate and aggressive investors, then rebalances on thresholds and backtests the results.</p>
+              <ul class="podium__tech" aria-label="Tools used"><li class="chip chip--plain">Python</li><li class="chip chip--plain">Pandas</li><li class="chip chip--plain">NumPy</li><li class="chip chip--plain">Streamlit</li></ul>
+            </div>
+          </li>
+          <li class="result">
+            <span class="result__live" aria-hidden="true"></span>
+            <div class="result__body">
+              <h4 class="result__title">Subscription Price Drift Detector</h4>
+              <p class="result__role">In progress</p>
+              <p>Scrapes iCloud+, Apple Music and Dropbox plan prices from their public pages to catch quiet price hikes before they show up on a bill.</p>
+              <ul class="podium__tech" aria-label="Tools used"><li class="chip chip--plain">Python</li><li class="chip chip--plain">Web scraping</li></ul>
+            </div>
+          </li>
+          <li class="result">
+            <span class="result__live" aria-hidden="true"></span>
+            <div class="result__body">
+              <h4 class="result__title">Multi-agent course timetabling</h4>
+              <p class="result__role">Proposal done, build next</p>
+              <p>Department and room agents bargain with each other until they agree on a clash-free university timetable. An Applied AI team project in reinforcement learning and multi-agent systems; I wrote the one-page proposal.</p>
+              <ul class="podium__tech" aria-label="Tools used"><li class="chip chip--plain">Reinforcement learning</li><li class="chip chip--plain">Multi-agent systems</li></ul>
+            </div>
+          </li>
+        </ul>
       </section>
 
       <!-- Team radio: contact -->

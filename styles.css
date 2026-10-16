@@ -120,7 +120,7 @@ a {
 .tower__head {
   display: grid;
   place-items: center;
-  padding: 0 0.9rem;
+  padding: 0 0.75rem;
   background: var(--rosso);
   text-decoration: none;
 }
@@ -149,9 +149,10 @@ a {
   justify-content: center;
   gap: 0.6rem;
   height: 100%;
-  padding: 0 0.5rem;
+  padding: 0 0.25rem;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+  white-space: nowrap;
   color: var(--steel);
   text-decoration: none;
   border-bottom: 3px solid transparent;
@@ -666,6 +667,191 @@ a {
   .sheet__row {
     grid-template-columns: 11rem 1fr;
     align-items: baseline;
+  }
+}
+
+/* Projects (race) */
+
+.race__heading {
+  margin: 3.5rem 0 1.25rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.session__head + .race__heading {
+  margin-top: 0;
+}
+
+.podium {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.podium__place {
+  display: flex;
+  flex-direction: column;
+}
+
+.podium__card {
+  flex: 1;
+  padding: 1.25rem 1.25rem 1.4rem;
+  background: var(--carbon-2);
+  border: 1px solid var(--asphalt);
+  border-radius: 0 0 6px 6px;
+}
+
+.podium__card p {
+  margin: 0 0 0.9rem;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.podium__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.podium .podium__question {
+  font-weight: 600;
+  color: var(--giallo);
+}
+
+.podium__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.podium__tech .chip {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.88rem;
+}
+
+.podium__step {
+  order: -1;
+  display: flex;
+  align-items: center;
+  padding: 0.35rem 1.25rem;
+  font-weight: 900;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  color: var(--chalk);
+  background: var(--asphalt);
+  border-radius: 6px 6px 0 0;
+}
+
+.podium__place--p1 .podium__step {
+  background: var(--rosso);
+}
+
+/* On wider screens the three places stand on a real podium: P2, P1, P3 */
+@media (min-width: 60rem) {
+  .podium {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+    gap: 0.75rem;
+  }
+
+  .podium__place--p1 { order: 2; }
+  .podium__place--p2 { order: 1; }
+  .podium__place--p3 { order: 3; }
+
+  .podium__card {
+    border-radius: 6px 6px 0 0;
+  }
+
+  .podium__step {
+    order: 0;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 0.6rem;
+    font-size: 2.2rem;
+    border-radius: 0;
+    transform: none;
+  }
+
+  .podium__place--p1 .podium__step { height: 7.5rem; }
+  .podium__place--p2 .podium__step { height: 5rem; }
+  .podium__place--p3 .podium__step { height: 3.5rem; }
+}
+
+.results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--asphalt);
+}
+
+.result {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--asphalt);
+}
+
+.result__pos {
+  font-weight: 900;
+  font-size: 1.6rem;
+  line-height: 1.1;
+  color: var(--steel);
+}
+
+.result__body {
+  max-width: 44rem;
+}
+
+.result__body p {
+  margin: 0 0 0.75rem;
+}
+
+.result__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.results .result__role {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--giallo);
+}
+
+/* A live-timing dot for work still in progress */
+.result__live {
+  justify-self: start;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: 0.45rem 0 0 0.35rem;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgb(31 210 95 / 0.6);
+  animation: live 1.8s ease-out infinite;
+}
+
+.results--live .result__role {
+  color: var(--green);
+}
+
+@keyframes live {
+  0% { box-shadow: 0 0 0 0 rgb(31 210 95 / 0.55); }
+  70% { box-shadow: 0 0 0 0.6rem rgb(31 210 95 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(31 210 95 / 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result__live {
+    animation: none;
   }
 }
 
