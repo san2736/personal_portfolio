@@ -31,11 +31,13 @@
   src: url('fonts/titillium-web-latin-900-normal.woff2') format('woff2');
 }
 
-/* Palette: Ferrari-inspired racing red and Modena yellow on carbon fibre. */
+/* Palette: Ferrari-inspired rosso corsa with black and white, on carbon fibre. */
 :root {
   --rosso: #d40000;
   --rosso-deep: #a30000;
-  --giallo: #ffd100;
+  --rosso-light: #ff5a4e; /* small red labels on dark backgrounds */
+  --nero: #0b0b0d;
+  --white: #ffffff;
   --carbon: #1c1d21;
   --carbon-2: #24262b;
   --asphalt: #33363d;
@@ -87,7 +89,7 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid var(--giallo);
+  outline: 3px solid var(--white);
   outline-offset: 3px;
 }
 
@@ -286,19 +288,19 @@ a {
   container-type: inline-size;
 }
 
-/* A Modena-yellow pinstripe along the bottom of the bodywork, with a raked leading edge */
+/* A black band and white pinstripe along the bottom of the bodywork, with a raked leading edge */
 .livery::before,
 .livery::after {
   content: '';
   position: absolute;
   z-index: -1;
   right: 0;
-  background: var(--giallo);
 }
 
 .livery::before {
   left: 38%;
   bottom: clamp(1.1rem, 2.4vw, 1.6rem);
+  background: var(--nero);
   height: clamp(0.55rem, 1.2vw, 0.8rem);
   clip-path: polygon(1.4rem 0, 100% 0, 100% 100%, 0 100%);
 }
@@ -306,6 +308,7 @@ a {
 .livery::after {
   left: 46%;
   bottom: clamp(0.5rem, 1.2vw, 0.8rem);
+  background: var(--white);
   height: 0.2rem;
   clip-path: polygon(0.4rem 0, 100% 0, 100% 100%, 0 100%);
 }
@@ -322,8 +325,8 @@ a {
 .livery__code {
   padding: 0.1rem 0.6rem;
   font-weight: 900;
-  color: var(--carbon);
-  background: var(--giallo);
+  color: var(--white);
+  background: var(--nero);
   border-radius: 3px;
 }
 
@@ -388,8 +391,8 @@ a {
 
 .livery__btn--sound[aria-pressed='true'] {
   color: var(--carbon);
-  background: var(--giallo);
-  border-color: var(--giallo);
+  background: var(--white);
+  border-color: var(--white);
 }
 
 /* Car number, painted on the bodywork */
@@ -401,7 +404,8 @@ a {
   font-weight: 900;
   font-size: clamp(5rem, 22cqi, 13rem);
   line-height: 0.8;
-  color: var(--giallo);
+  color: var(--white);
+  text-shadow: 0.03em 0.03em 0 rgb(0 0 0 / 0.22);
   transform: skewX(-9deg);
   user-select: none;
 }
@@ -514,7 +518,7 @@ a {
 .session__kind {
   margin: 0 0 0.25rem;
   font-weight: 700;
-  color: var(--giallo);
+  color: var(--rosso-light);
 }
 
 .session h2 {
@@ -718,7 +722,7 @@ a {
 
 .podium .podium__question {
   font-weight: 600;
-  color: var(--giallo);
+  color: var(--rosso-light);
 }
 
 .podium__tech {
@@ -824,7 +828,7 @@ a {
   margin-bottom: 0.5rem;
   font-weight: 600;
   font-size: 0.95rem;
-  color: var(--giallo);
+  color: var(--rosso-light);
 }
 
 /* A live-timing dot for work still in progress */

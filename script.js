@@ -1,6 +1,6 @@
 // ---------- Start lights and engine sound ----------
-// The sound is one audio file (sounds/start.mp3) with the five beeps and the engine.
-// These timings match the file exactly, so the lights stay in sync with the beeps.
+// The sound is one audio file (sounds/start.mp3): the grid holding revs, then the launch.
+// These timings match the file exactly, so lights out lands on the launch.
 const LIGHT_TIMES = [0.45, 1.05, 1.65, 2.25, 2.85]; // seconds
 const LIGHTS_OUT = 3.9; // seconds
 

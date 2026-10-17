@@ -1,8 +1,8 @@
 # Sanaz Katpitia, personal portfolio
 
 My personal portfolio site, built around the thing I watch every race weekend: a Formula 1 start.
-The page opens on the grid as car 27. Press start, five red lights come on with a beep each, and once they go out to an engine roar, the rest of the site runs like a race weekend:
-practice (about me), qualifying (skills) and team radio (contact).
+The page opens on the grid as car 27. Press start, the grid holds revs while five red lights come on, and once they go out and the field launches, the rest of the site runs like a race weekend:
+practice (about me), qualifying (skills), the race (projects) and team radio (contact).
 
 **Live site:** https://san2736.github.io/personal_portfolio/
 
@@ -18,7 +18,7 @@ practice (about me), qualifying (skills) and team radio (contact).
 - `styles.css`: colours, layout and the start-light animation
 - `script.js`: the start sequence and the timing-tower navigation
 - `404.html`: the page shown for a broken link
-- `sounds/start.mp3`: the start-light beeps and engine sound
+- `sounds/start.mp3`: the race-start sound (a grid of engines holding revs, then the launch)
 - `tools/make_start_sound.py`: the Python script that generates that sound (NumPy and SciPy), so the audio is original rather than a recording
 - `fonts/`: the Titillium Web font files
 
@@ -27,4 +27,4 @@ To preview locally, open `index.html` in a browser.
 ## Credits
 
 - Design, content and code by Sanaz Katpitia, with help from an AI coding assistant (Claude), as allowed by the assignment.
-- The racing red and yellow are inspired by Ferrari's colours. No team or Formula 1 logos or trademarks are used.
+- The rosso corsa red, black and white are inspired by Ferrari's colours. No team or Formula 1 logos or trademarks are used.
