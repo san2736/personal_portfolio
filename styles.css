@@ -405,7 +405,7 @@ a {
   top: clamp(0.5rem, 3cqi, 2rem);
   right: clamp(1rem, 5cqi, 3.5rem);
   font-weight: 900;
-  font-size: clamp(5rem, 22cqi, 13rem);
+  font-size: clamp(5rem, 17cqi, 13rem);
   line-height: 0.8;
   color: var(--white);
   text-shadow: 0.03em 0.03em 0 rgb(0 0 0 / 0.22);
@@ -413,7 +413,7 @@ a {
   user-select: none;
 }
 
-@container (max-width: 36rem) {
+@container (max-width: 26rem) {
   .livery__number {
     font-size: 40cqi;
   }
@@ -1025,78 +1025,83 @@ a {
     display: block;
     position: fixed;
     z-index: 40;
-    top: 1.5rem;
-    bottom: 1.5rem;
-    right: 0.55rem;
-    width: 28px;
-    border-radius: 14px;
-    background: #2a2c31;
-    box-shadow: 0 0 0 1px #000, 0 6px 20px -8px #000;
+    top: calc(var(--bar-h) + 1rem); /* below the menu bar on tablets */
+    bottom: 1rem;
+    right: 0.4rem;
+    width: 58px;
     cursor: grab;
     touch-action: none;
-    overflow: hidden;
   }
-
-  /* Red and white kerbs down both edges */
-  .track::before,
-  .track::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: repeating-linear-gradient(180deg, var(--rosso) 0 8px, #f3f3f0 8px 16px);
-  }
-
-  .track::before { left: 0; }
-  .track::after { right: 0; }
 
   .track.is-dragging {
     cursor: grabbing;
   }
 
-  /* Chequered start and finish lines */
-  .track__line {
+  .track__map {
     position: absolute;
-    left: 3px;
-    right: 3px;
-    height: 8px;
-    background: conic-gradient(#f3f3f0 25%, #0b0b0d 0 50%, #f3f3f0 0 75%, #0b0b0d 0) 0 0 / 8px 8px;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
   }
 
-  .track__line--start { top: 10px; }
-  .track__line--finish { bottom: 10px; }
+  .track__map path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
+  .track__map .track__kerb {
+    stroke: var(--rosso);
+    stroke-width: 27;
+  }
+
+  .track__map .track__kerb--white {
+    stroke: #f3f3f0;
+    stroke-dasharray: 6 6;
+    stroke-linecap: butt; /* round caps would fill the red gaps */
+  }
+
+  .track__map .track__asphalt {
+    stroke: #2c2e34;
+    stroke-width: 18;
+    filter: drop-shadow(0 0 1px #000);
+  }
+
+  /* Positioned and steered along the circuit by script.js */
   .track__car-pos {
     position: absolute;
     top: 0;
-    left: 50%;
+    left: 0;
     width: 14px;
     height: 34px;
-    margin-left: -7px;
+    margin: -17px 0 0 -7px;
     will-change: transform;
   }
 
-  /* The turn: swap lanes and spin round */
-  .track__car {
-    display: block;
-    transform: translateX(3px) rotate(180deg);
+  /* The U-turn: swap lanes and spin round when the scroll direction changes */
+  .track__car-turn {
+    transform: translateX(2.5px) rotate(0deg);
     transition: transform 0.45s cubic-bezier(0.5, 0, 0.3, 1);
-    filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.6));
   }
 
-  .track[data-dir='up'] .track__car {
-    transform: translateX(-3px) rotate(0deg);
+  .track[data-dir='up'] .track__car-turn {
+    transform: translateX(-2.5px) rotate(180deg);
+  }
+
+  .track__car {
+    display: block;
+    filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.6));
   }
 
   /* Keep the hero and sections clear of the track */
   #top {
-    padding-right: 2.5rem;
+    padding-right: 4rem;
   }
 }
 
 @media (min-width: 48rem) and (prefers-reduced-motion: reduce) {
-  .track__car {
+  .track__car-turn {
     transition: none;
   }
 }

@@ -167,23 +167,76 @@ function timingTower() {
 }
 
 // ---------- Race-track scroll bar ----------
+// The car follows the circuit drawn in the SVG: scroll progress becomes distance along the track,
+// and the car is rotated to the direction of the track at that point, so it steers through the corners.
 function raceTrack() {
   const track = document.querySelector('[data-track]');
   const car = document.querySelector('[data-car]');
-  if (!track || !car) return;
+  const path = document.querySelector('[data-path]');
+  if (!track || !car || !path) return;
   const doc = document.documentElement;
-  const PAD = 22; // keep the car between the start and finish lines
+  const VIEW_W = 60;
+  const VIEW_H = 1000;
+  const total = path.getTotalLength();
+
+  // Sample the circuit once, so scrolling never has to measure the path again
+  const SAMPLES = 500;
+  const pts = [];
+  for (let i = 0; i <= SAMPLES; i++) {
+    const p = path.getPointAtLength((i / SAMPLES) * total);
+    pts.push({ x: p.x, y: p.y });
+  }
+
+  // Redraw the circuit at the track's real pixel size, so kerb stripes and corners keep their shape
+  const map = document.querySelector('[data-map]');
+  const original = path.getAttribute('d');
+  const scalePath = (d, sx, sy) => {
+    let isX = true;
+    return d.replace(/-?\d+(\.\d+)?/g, (n) => {
+      const v = parseFloat(n) * (isX ? sx : sy);
+      isX = !isX;
+      return v.toFixed(2);
+    });
+  };
+  let drawnFor = '';
+  const draw = (w, h) => {
+    const key = w + 'x' + h;
+    if (key === drawnFor) return;
+    drawnFor = key;
+    const sx = w / VIEW_W;
+    const sy = h / VIEW_H;
+    map.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    const d = scalePath(original, sx, sy);
+    map.querySelectorAll('[data-draw]').forEach((el) => el.setAttribute('d', d));
+    map.querySelectorAll('[data-rect]').forEach((el) => {
+      const [x, y, rw, rh] = el.dataset.rect.split(' ').map(Number);
+      el.setAttribute('x', (x * sx).toFixed(2));
+      el.setAttribute('y', (y * sy).toFixed(2));
+      el.setAttribute('width', (rw * sx).toFixed(2));
+      el.setAttribute('height', (rh * sy).toFixed(2));
+    });
+  };
+
   let last = window.scrollY;
   let queued = false;
-
   const maxScroll = () => Math.max(0, doc.scrollHeight - window.innerHeight);
 
   const place = () => {
     queued = false;
+    const w = track.clientWidth;
+    const h = track.clientHeight;
+    const sx = w / VIEW_W;
+    const sy = h / VIEW_H;
+    draw(w, h);
     const max = maxScroll();
     const progress = max ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    const travel = track.clientHeight - car.offsetHeight - PAD * 2;
-    car.style.transform = `translateY(${PAD + progress * travel}px)`;
+    const i = Math.round(progress * SAMPLES);
+    const a = pts[Math.max(0, i - 3)];
+    const b = pts[Math.min(SAMPLES, i + 3)];
+    const here = pts[i];
+    // Direction of travel in screen pixels. The car is drawn nose-up (-90 degrees), so add 90 to point it along the track
+    const angle = (Math.atan2((b.y - a.y) * sy, (b.x - a.x) * sx) * 180) / Math.PI + 90;
+    car.style.transform = `translate(${here.x * sx}px, ${here.y * sy}px) rotate(${angle}deg)`;
     const y = window.scrollY;
     if (y > last + 1) track.dataset.dir = 'down';
     else if (y < last - 1) track.dataset.dir = 'up';
@@ -198,12 +251,16 @@ function raceTrack() {
   track.dataset.dir = 'down';
   place();
 
-  // Drag the car, or click anywhere on the track, to scroll like a normal scroll bar.
+  // Drag the car, or click on the track, to scroll like a normal scroll bar.
+  // The circuit only ever runs downwards, so the nearest sample by height gives the progress.
   const scrollToPointer = (clientY) => {
     const rect = track.getBoundingClientRect();
-    const usable = rect.height - car.offsetHeight - PAD * 2;
-    const p = Math.min(1, Math.max(0, (clientY - rect.top - PAD - car.offsetHeight / 2) / usable));
-    window.scrollTo({ top: p * maxScroll(), behavior: 'instant' }); // follow the pointer exactly, no smooth-scroll lag
+    const y = ((clientY - rect.top) / rect.height) * VIEW_H;
+    let best = 0;
+    for (let i = 1; i <= SAMPLES; i++) {
+      if (Math.abs(pts[i].y - y) < Math.abs(pts[best].y - y)) best = i;
+    }
+    window.scrollTo({ top: (best / SAMPLES) * maxScroll(), behavior: 'instant' }); // follow the pointer exactly
   };
   track.addEventListener('pointerdown', (e) => {
     track.setPointerCapture(e.pointerId);

@@ -331,25 +331,41 @@
       </footer>
     </main>
 
-    <!-- Scroll bar as a race track: the car drives down as you scroll, and turns round when you scroll back up -->
+    <!-- Scroll bar as a race track: the car follows the circuit as you scroll, and turns round when you scroll back up -->
     <div class="track" data-track aria-hidden="true">
-      <div class="track__line track__line--start"></div>
-      <div class="track__line track__line--finish"></div>
+      <!-- The circuit is designed on a 60 x 1000 grid; script.js redraws it at the track's real size -->
+      <svg class="track__map" data-map>
+        <defs>
+          <pattern id="chequer" width="6" height="6" patternUnits="userSpaceOnUse">
+            <rect width="6" height="6" fill="#f3f3f0" />
+            <rect width="3" height="3" fill="#0b0b0d" />
+            <rect x="3" y="3" width="3" height="3" fill="#0b0b0d" />
+          </pattern>
+        </defs>
+        <path data-path d="M30 20 L30 110 C30 160 48 160 48 210 L48 290 C48 350 12 340 12 410 L12 470 C12 515 46 510 46 555 C46 600 16 595 16 640 L16 720 C16 790 47 780 47 845 C47 900 30 895 30 935 L30 980" visibility="hidden" />
+        <path class="track__kerb" data-draw />
+        <path class="track__kerb track__kerb--white" data-draw />
+        <path class="track__asphalt" data-draw />
+        <rect data-rect="21 25 18 7" fill="url(#chequer)" />
+        <rect data-rect="21 968 18 7" fill="url(#chequer)" />
+      </svg>
       <div class="track__car-pos" data-car>
-        <svg class="track__car" viewBox="0 0 28 68" width="14" height="34">
-          <rect x="2" y="1" width="24" height="4" rx="1" fill="#0b0b0d" />
-          <rect x="0" y="9" width="6" height="12" rx="2" fill="#0b0b0d" />
-          <rect x="22" y="9" width="6" height="12" rx="2" fill="#0b0b0d" />
-          <path d="M12 4h4l1.4 22h-6.8z" fill="#d40000" />
-          <rect x="5" y="28" width="18" height="17" rx="5" fill="#d40000" />
-          <rect x="8.5" y="22" width="11" height="36" rx="4" fill="#d40000" />
-          <ellipse cx="14" cy="33" rx="3.2" ry="5" fill="#0b0b0d" />
-          <circle cx="14" cy="33" r="2" fill="#ffd100" />
-          <rect x="13" y="40" width="2" height="16" fill="#a30000" />
-          <rect x="0" y="45" width="7" height="14" rx="2" fill="#0b0b0d" />
-          <rect x="21" y="45" width="7" height="14" rx="2" fill="#0b0b0d" />
-          <rect x="3" y="61" width="22" height="5" rx="1" fill="#0b0b0d" />
-        </svg>
+        <div class="track__car-turn">
+          <svg class="track__car" viewBox="0 0 28 68" width="14" height="34">
+            <rect x="2" y="1" width="24" height="4" rx="1" fill="#0b0b0d" />
+            <rect x="0" y="9" width="6" height="12" rx="2" fill="#0b0b0d" />
+            <rect x="22" y="9" width="6" height="12" rx="2" fill="#0b0b0d" />
+            <path d="M12 4h4l1.4 22h-6.8z" fill="#d40000" />
+            <rect x="5" y="28" width="18" height="17" rx="5" fill="#d40000" />
+            <rect x="8.5" y="22" width="11" height="36" rx="4" fill="#d40000" />
+            <ellipse cx="14" cy="33" rx="3.2" ry="5" fill="#0b0b0d" />
+            <circle cx="14" cy="33" r="2" fill="#ffd100" />
+            <rect x="13" y="40" width="2" height="16" fill="#a30000" />
+            <rect x="0" y="45" width="7" height="14" rx="2" fill="#0b0b0d" />
+            <rect x="21" y="45" width="7" height="14" rx="2" fill="#0b0b0d" />
+            <rect x="3" y="61" width="22" height="5" rx="1" fill="#0b0b0d" />
+          </svg>
+        </div>
       </div>
     </div>
 
