@@ -36,6 +36,7 @@
   --rosso: #d40000;
   --rosso-deep: #a30000;
   --rosso-light: #ff5a4e; /* small red labels on dark backgrounds */
+  --giallo: #ffd100; /* used sparingly: the SAN code and the driver's helmet */
   --nero: #0b0b0d;
   --white: #ffffff;
   --carbon: #1c1d21;
@@ -131,6 +132,8 @@ a {
   font-weight: 900;
   font-size: 1.1rem;
   letter-spacing: 0.04em;
+  border-bottom: 3px solid var(--giallo);
+  line-height: 1.15;
 }
 
 .tower__list {
@@ -325,7 +328,7 @@ a {
 .livery__code {
   padding: 0.1rem 0.6rem;
   font-weight: 900;
-  color: var(--white);
+  color: var(--giallo);
   background: var(--nero);
   border-radius: 3px;
 }
@@ -982,4 +985,118 @@ a {
   text-decoration: none;
   background: var(--rosso);
   border-radius: 4px;
+}
+
+/* ---------- Project links ---------- */
+
+.podium__card .project-link,
+.result__body .project-link {
+  margin: 0.9rem 0 0;
+}
+
+.project-link a {
+  font-weight: 700;
+  color: var(--white);
+  text-decoration-color: var(--rosso-light);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.project-link a:hover {
+  color: var(--rosso-light);
+}
+
+/* ---------- Race-track scroll bar ---------- */
+
+.track {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  html {
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  .track {
+    display: block;
+    position: fixed;
+    z-index: 40;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    right: 0.55rem;
+    width: 28px;
+    border-radius: 14px;
+    background: #2a2c31;
+    box-shadow: 0 0 0 1px #000, 0 6px 20px -8px #000;
+    cursor: grab;
+    touch-action: none;
+    overflow: hidden;
+  }
+
+  /* Red and white kerbs down both edges */
+  .track::before,
+  .track::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: repeating-linear-gradient(180deg, var(--rosso) 0 8px, #f3f3f0 8px 16px);
+  }
+
+  .track::before { left: 0; }
+  .track::after { right: 0; }
+
+  .track.is-dragging {
+    cursor: grabbing;
+  }
+
+  /* Chequered start and finish lines */
+  .track__line {
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    height: 8px;
+    background: conic-gradient(#f3f3f0 25%, #0b0b0d 0 50%, #f3f3f0 0 75%, #0b0b0d 0) 0 0 / 8px 8px;
+  }
+
+  .track__line--start { top: 10px; }
+  .track__line--finish { bottom: 10px; }
+
+  .track__car-pos {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 14px;
+    height: 34px;
+    margin-left: -7px;
+    will-change: transform;
+  }
+
+  /* The turn: swap lanes and spin round */
+  .track__car {
+    display: block;
+    transform: translateX(3px) rotate(180deg);
+    transition: transform 0.45s cubic-bezier(0.5, 0, 0.3, 1);
+    filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.6));
+  }
+
+  .track[data-dir='up'] .track__car {
+    transform: translateX(-3px) rotate(0deg);
+  }
+
+  /* Keep the hero and sections clear of the track */
+  #top {
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 48rem) and (prefers-reduced-motion: reduce) {
+  .track__car {
+    transition: none;
+  }
 }

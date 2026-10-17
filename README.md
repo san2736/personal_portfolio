@@ -1,8 +1,9 @@
 # Sanaz Katpitia, personal portfolio
 
 My personal portfolio site, built around the thing I watch every race weekend: a Formula 1 start.
-The page opens on the grid as car 27. Press start, the grid holds revs while five red lights come on, and once they go out and the field launches, the rest of the site runs like a race weekend:
+The page opens on the grid as car 27. Press start, the grid holds revs while five red lights come on, each with a tone, and once they go out and the field launches, the rest of the site runs like a race weekend:
 practice (about me), qualifying (skills), the race (projects) and team radio (contact).
+On wider screens the scroll bar is a race track: a red car drives down it as you scroll, and turns round when you scroll back up.
 
 **Live site:** https://san2736.github.io/personal_portfolio/
 
@@ -16,7 +17,7 @@ practice (about me), qualifying (skills), the race (projects) and team radio (co
 
 - `index.html`: the page and all its content
 - `styles.css`: colours, layout and the start-light animation
-- `script.js`: the start sequence and the timing-tower navigation
+- `script.js`: the start sequence, the timing-tower navigation and the race-track scroll bar
 - `404.html`: the page shown for a broken link
 - `sounds/start.mp3`: the race-start sound (a grid of engines holding revs, then the launch)
 - `tools/make_start_sound.py`: the Python script that generates that sound (NumPy and SciPy), so the audio is original rather than a recording

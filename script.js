@@ -166,5 +166,61 @@ function timingTower() {
   document.querySelectorAll('.session').forEach((s) => observer.observe(s));
 }
 
+// ---------- Race-track scroll bar ----------
+function raceTrack() {
+  const track = document.querySelector('[data-track]');
+  const car = document.querySelector('[data-car]');
+  if (!track || !car) return;
+  const doc = document.documentElement;
+  const PAD = 22; // keep the car between the start and finish lines
+  let last = window.scrollY;
+  let queued = false;
+
+  const maxScroll = () => Math.max(0, doc.scrollHeight - window.innerHeight);
+
+  const place = () => {
+    queued = false;
+    const max = maxScroll();
+    const progress = max ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    const travel = track.clientHeight - car.offsetHeight - PAD * 2;
+    car.style.transform = `translateY(${PAD + progress * travel}px)`;
+    const y = window.scrollY;
+    if (y > last + 1) track.dataset.dir = 'down';
+    else if (y < last - 1) track.dataset.dir = 'up';
+    last = y;
+  };
+  const queue = () => {
+    if (!queued) { queued = true; requestAnimationFrame(place); }
+  };
+
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  track.dataset.dir = 'down';
+  place();
+
+  // Drag the car, or click anywhere on the track, to scroll like a normal scroll bar.
+  const scrollToPointer = (clientY) => {
+    const rect = track.getBoundingClientRect();
+    const usable = rect.height - car.offsetHeight - PAD * 2;
+    const p = Math.min(1, Math.max(0, (clientY - rect.top - PAD - car.offsetHeight / 2) / usable));
+    window.scrollTo({ top: p * maxScroll(), behavior: 'instant' }); // follow the pointer exactly, no smooth-scroll lag
+  };
+  track.addEventListener('pointerdown', (e) => {
+    track.setPointerCapture(e.pointerId);
+    track.classList.add('is-dragging');
+    scrollToPointer(e.clientY);
+  });
+  track.addEventListener('pointermove', (e) => {
+    if (track.hasPointerCapture(e.pointerId)) scrollToPointer(e.clientY);
+  });
+  const stop = (e) => {
+    if (track.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId);
+    track.classList.remove('is-dragging');
+  };
+  track.addEventListener('pointerup', stop);
+  track.addEventListener('pointercancel', stop);
+}
+
 startLights();
 timingTower();
+raceTrack();

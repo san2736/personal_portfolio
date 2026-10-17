@@ -1,6 +1,7 @@
 """Synthesise an F1-style race start, written from scratch with NumPy and SciPy (no recordings).
 
-A grid of twelve V6 hybrid engines holds revs while the five lights come on, then launches at lights out:
+A grid of twelve V6 hybrid engines holds revs while the five lights come on, each light with a deep
+broadcast-style tone, then launches at lights out:
 clutch bite, quick upshifts, and the field pulling away into the distance, with the crowd rising.
 
 The timings must match LIGHT_TIMES and LIGHTS_OUT in script.js.
@@ -89,6 +90,18 @@ for i in range(12):
     pan = rng.uniform(-0.8, 0.8)
     left += car * np.sqrt((1 - pan) / 2)
     right += car * np.sqrt((1 + pan) / 2)
+
+# Broadcast-style start-light tones: one deep electronic tone as each column lights up
+for lt in LIGHT_TIMES:
+    n = int(0.42 * SR)
+    i0 = int(lt * SR)
+    tt = np.arange(n) / SR
+    env = np.minimum(1, tt / 0.004) * np.exp(-tt / 0.13)
+    # pitched between the engines' harmonics so the tones cut through the grid noise
+    tone = (np.sin(2 * np.pi * 740.0 * tt) + 0.45 * np.sin(2 * np.pi * 370.0 * tt)
+            + 0.15 * np.sin(2 * np.pi * 1480.0 * tt))
+    for ch in (left, right):
+        ch[i0:i0 + n] += 2.6 * env * tone
 
 # Crowd and wind, rising at lights out
 crowd = bandpass(rng.standard_normal(N), 250, 3200)
