@@ -418,6 +418,79 @@ a {
   }
 }
 
+/* The pit-wall picture, shown in the livery once the lights go out */
+.pitcam {
+  margin: 0.25rem 0 0;
+  background: var(--nero);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.7);
+}
+
+.pitcam img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pitcam figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  color: var(--chalk);
+}
+
+.pitcam__tag {
+  padding: 0.05rem 0.5rem;
+  font-weight: 900;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--giallo);
+  border: 1px solid var(--giallo);
+  border-radius: 3px;
+}
+
+/* Laptops: the picture sits beside the name, under the car number */
+@media (min-width: 64rem) {
+  .livery {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    grid-template-areas:
+      'tag  num'
+      'name cam'
+      'line cam'
+      'ctrl cam';
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: clamp(2rem, 4vw, 4rem);
+    row-gap: 1.25rem;
+    align-content: center;
+  }
+
+  .livery__number {
+    grid-area: num;
+    justify-self: end;
+    align-self: end;
+    margin: 0;
+    font-size: clamp(4rem, 11cqi, 9rem);
+  }
+
+  .livery__tag { grid-area: tag; align-self: end; }
+  .livery__name { grid-area: name; font-size: clamp(3rem, 8cqi, 6.5rem); }
+  .livery__line { grid-area: line; }
+  .livery__controls { grid-area: ctrl; align-self: start; }
+
+  .pitcam {
+    grid-area: cam;
+    align-self: start;
+    margin: 0;
+    transform: rotate(1.5deg);
+  }
+}
+
 /* ---------- Tap to start ---------- */
 
 .gate {

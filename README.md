@@ -19,7 +19,7 @@ The scroll bar is a race circuit: a closed loop with a grass infield and kerbs, 
 - `styles.css`: colours, layout and the start-light animation
 - `script.js`: the start sequence, the timing-tower navigation and the race-track scroll bar
 - `404.html`: the page shown for a broken link
-- `images/`: photos of my own paintings, resized for the web
+- `images/`: photos of my own paintings and the AI-generated pit-wall picture, resized for the web
 - `sounds/start.mp3`: the race-start sound (a grid of engines holding revs, then the launch)
 - `tools/make_start_sound.py`: the Python script that generates that sound (NumPy and SciPy), so the audio is original rather than a recording
 - `fonts/`: the Titillium Web font files
@@ -29,6 +29,7 @@ To preview locally, open `index.html` in a browser.
 ## Credits
 
 - Design, content and code by Sanaz Pashin Katpitia, with help from an AI coding assistant (Claude), as allowed by the assignment.
-- The rosso corsa red, black and white are inspired by Ferrari's colours. The site's design uses no team or Formula 1 logos.
+- The rosso corsa red, black and white are inspired by Ferrari's colours. The site's own design uses no team or Formula 1 logos; team and sponsor logos appear only inside my paintings and the AI-generated picture, and belong to their owners.
 - All three paintings are my own. "The water lily pond" and "Sailboats" are my versions of paintings by Claude Monet. "Car 16" is my painting of Charles Leclerc's Ferrari; the sponsor names on it are painted by hand as part of the artwork, and belong to their owners.
+- The pit-wall picture of me in the opening section is AI-generated with Google Gemini, based on a photo from [GPFans](https://www.gpfans.com/en/f1-news/111175/ferrari-upgrade-red-bull-silverstone-british-grand-prix-f1/). It is labelled as AI-generated on the page too.
 - The quote "Ask a child to draw a car, and certainly he will draw it red." is attributed to Enzo Ferrari.
