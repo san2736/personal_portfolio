@@ -1,4 +1,4 @@
-# Sanaz Katpitia, personal portfolio
+# Sanaz Pashin Katpitia, personal portfolio
 
 My personal portfolio site, built around the thing I watch every race weekend: a Formula 1 start.
 The page opens on the grid as car 27. Press start, the grid holds revs while five red lights come on, each with a tone, and once they go out and the field launches, the rest of the site runs like a race weekend:
@@ -28,7 +28,7 @@ To preview locally, open `index.html` in a browser.
 
 ## Credits
 
-- Design, content and code by Sanaz Katpitia, with help from an AI coding assistant (Claude), as allowed by the assignment.
+- Design, content and code by Sanaz Pashin Katpitia, with help from an AI coding assistant (Claude), as allowed by the assignment.
 - The rosso corsa red, black and white are inspired by Ferrari's colours. The site's design uses no team or Formula 1 logos.
 - All three paintings are my own. "The water lily pond" and "Sailboats" are my versions of paintings by Claude Monet. "Car 16" is my painting of Charles Leclerc's Ferrari; the sponsor names on it are painted by hand as part of the artwork, and belong to their owners.
 - The quote "Ask a child to draw a car, and certainly he will draw it red." is attributed to Enzo Ferrari.
