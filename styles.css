@@ -1119,15 +1119,15 @@ html::-webkit-scrollbar {
 }
 
 .track {
-  --kerb-w: 42;
-  --asphalt-w: 32;
-  --sway: 0.55;
+  --kerb-w: 56;
+  --asphalt-w: 46;
+  --sway: 0.5;
   position: fixed;
   z-index: 40;
   top: calc(var(--bar-h) + 0.6rem); /* below the menu bar on phones and tablets */
   bottom: 0.6rem;
   right: 2px;
-  width: 64px;
+  width: 80px;
   cursor: grab;
   touch-action: none; /* lets a finger drag the car instead of scrolling the page */
 }
@@ -1180,12 +1180,12 @@ html::-webkit-scrollbar {
 
 /* The U-turn: swap lanes and spin round when the scroll direction changes */
 .track__car-turn {
-  transform: translateX(1px) rotate(0deg);
+  transform: translateX(6px) rotate(0deg);
   transition: transform 0.45s cubic-bezier(0.5, 0, 0.3, 1);
 }
 
 .track[data-dir='up'] .track__car-turn {
-  transform: translateX(-1px) rotate(180deg);
+  transform: translateX(-6px) rotate(180deg);
 }
 
 .track__car {
@@ -1197,18 +1197,18 @@ html::-webkit-scrollbar {
 
 /* Keep the page content clear of the track */
 #top {
-  padding-right: 3.25rem;
+  padding-right: 4.25rem;
 }
 
 @media (min-width: 48rem) {
   .track {
-    --kerb-w: 50;
-    --asphalt-w: 36;
-    --sway: 0.8;
+    --kerb-w: 64;
+    --asphalt-w: 52;
+    --sway: 0.7;
     top: calc(var(--bar-h) + 1rem);
     bottom: 1rem;
     right: 0.4rem;
-    width: 96px;
+    width: 112px;
   }
 
   .track__map .track__kerb--white {
@@ -1222,11 +1222,11 @@ html::-webkit-scrollbar {
   }
 
   .track__car-turn {
-    transform: translateX(2px) rotate(0deg);
+    transform: translateX(8px) rotate(0deg);
   }
 
   .track[data-dir='up'] .track__car-turn {
-    transform: translateX(-2px) rotate(180deg);
+    transform: translateX(-8px) rotate(180deg);
   }
 
   .track__car {
@@ -1235,18 +1235,18 @@ html::-webkit-scrollbar {
   }
 
   #top {
-    padding-right: 6rem;
+    padding-right: 7.5rem;
   }
 }
 
 /* Laptops and desktops: a bigger circuit and car */
 @media (min-width: 64rem) {
   .track {
-    --kerb-w: 56;
-    --asphalt-w: 40;
-    --sway: 1;
+    --kerb-w: 72;
+    --asphalt-w: 56;
+    --sway: 0.8;
     right: 0.75rem;
-    width: 124px;
+    width: 140px;
   }
 
   .track__map .track__kerb--white {
@@ -1260,11 +1260,11 @@ html::-webkit-scrollbar {
   }
 
   .track__car-turn {
-    transform: translateX(4px) rotate(0deg);
+    transform: translateX(9px) rotate(0deg);
   }
 
   .track[data-dir='up'] .track__car-turn {
-    transform: translateX(-4px) rotate(180deg);
+    transform: translateX(-9px) rotate(180deg);
   }
 
   .track__car {
@@ -1273,7 +1273,7 @@ html::-webkit-scrollbar {
   }
 
   #top {
-    padding-right: 8.5rem;
+    padding-right: 9.5rem;
   }
 }
 
