@@ -10,7 +10,7 @@
     <meta property="og:description" content="Data science student at NMIMS MPSTME, Mumbai. Python, SQL, machine learning, dashboards, Formula 1, painting and music." />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20261018" />
     <!-- Decide before first paint whether the start sequence should run, so nothing flashes. -->
     <script>
       (function () {
@@ -36,6 +36,8 @@
     <main id="top">
       <!-- Hero: five start lights, then the livery -->
       <header class="grid">
+        <!-- Behind the lights while the race is about to start: the view from the pit wall -->
+        <img class="grid__backdrop" src="images/pit-wall-1200.jpg" srcset="images/pit-wall-700.jpg 700w, images/pit-wall-1200.jpg 1200w" sizes="100vw" width="1200" height="896" alt="" aria-hidden="true" />
         <div class="gantry" aria-hidden="true">
           <div class="gantry__col"><span class="lamp"></span><span class="lamp"></span></div>
           <div class="gantry__col"><span class="lamp"></span><span class="lamp"></span></div>
@@ -79,8 +81,7 @@
             </button>
           </div>
           <figure class="pitcam">
-            <img src="images/pit-wall-700.jpg" srcset="images/pit-wall-700.jpg 700w, images/pit-wall-1200.jpg 1200w" sizes="(min-width: 64rem) 40vw, 100vw" width="700" height="523" alt="AI-generated image of me in Ferrari team kit and headphones, at the pit wall in front of timing and telemetry screens." />
-            <figcaption><span class="pitcam__tag">Pit wall</span> The dream job. AI-generated with Gemini.</figcaption>
+            <img src="images/pit-wall-700.jpg" srcset="images/pit-wall-700.jpg 700w, images/pit-wall-1200.jpg 1200w" sizes="(min-width: 64rem) 40vw, 100vw" width="700" height="523" alt="Me at the Ferrari pit wall in team kit and headphones, in front of timing and telemetry screens." />
           </figure>
         </div>
       </header>
@@ -415,6 +416,6 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20261018"></script>
   </body>
 </html>

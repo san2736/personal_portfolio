@@ -31,5 +31,5 @@ To preview locally, open `index.html` in a browser.
 - Design, content and code by Sanaz Pashin Katpitia, with help from an AI coding assistant (Claude), as allowed by the assignment.
 - The rosso corsa red, black and white are inspired by Ferrari's colours. The site's own design uses no team or Formula 1 logos; team and sponsor logos appear only inside my paintings and the AI-generated picture, and belong to their owners.
 - All three paintings are my own. "The water lily pond" and "Sailboats" are my versions of paintings by Claude Monet. "Car 16" is my painting of Charles Leclerc's Ferrari; the sponsor names on it are painted by hand as part of the artwork, and belong to their owners.
-- The pit-wall picture of me in the opening section is AI-generated with Google Gemini, based on a photo from [GPFans](https://www.gpfans.com/en/f1-news/111175/ferrari-upgrade-red-bull-silverstone-british-grand-prix-f1/). It is labelled as AI-generated on the page too.
+- The pit-wall picture of me (on the start screen and in the opening section) is AI-generated with Google Gemini, based on a photo from [GPFans](https://www.gpfans.com/en/f1-news/111175/ferrari-upgrade-red-bull-silverstone-british-grand-prix-f1/).
 - The quote "Ask a child to draw a car, and certainly he will draw it red." is attributed to Enzo Ferrari.

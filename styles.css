@@ -243,6 +243,8 @@ a {
 }
 
 .gantry {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   gap: clamp(0.4rem, 2vw, 1rem);
@@ -433,27 +435,6 @@ a {
   height: auto;
 }
 
-.pitcam figcaption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.3rem 0.6rem;
-  padding: 0.6rem 0.8rem;
-  font-size: 0.9rem;
-  color: var(--chalk);
-}
-
-.pitcam__tag {
-  padding: 0.05rem 0.5rem;
-  font-weight: 900;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--giallo);
-  border: 1px solid var(--giallo);
-  border-radius: 3px;
-}
-
 /* Laptops: the picture sits beside the name, under the car number */
 @media (min-width: 64rem) {
   .livery {
@@ -549,6 +530,37 @@ a {
 
 .gate__quiet:hover {
   color: var(--chalk);
+}
+
+/* The pit-wall picture fills the start screen, darkened so the lights and the start button stand out,
+   and fades away as the red bodywork wipes in at lights out */
+.grid__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 40%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  filter: brightness(0.5) saturate(0.95);
+}
+
+.pre-start .grid__backdrop {
+  opacity: 1;
+}
+
+.awaiting .gate {
+  z-index: 2;
+}
+
+.awaiting .gate__lead {
+  color: var(--chalk);
+  text-shadow: 0 1px 3px #000, 0 0 14px rgb(0 0 0 / 0.8);
 }
 
 /* The start sequence: the red bodywork stays hidden until the lights go out. */
