@@ -19,6 +19,7 @@ The scroll bar is a winding race track: a red car follows the circuit as you scr
 - `styles.css`: colours, layout and the start-light animation
 - `script.js`: the start sequence, the timing-tower navigation and the race-track scroll bar
 - `404.html`: the page shown for a broken link
+- `images/`: photos of my own paintings, resized for the web
 - `sounds/start.mp3`: the race-start sound (a grid of engines holding revs, then the launch)
 - `tools/make_start_sound.py`: the Python script that generates that sound (NumPy and SciPy), so the audio is original rather than a recording
 - `fonts/`: the Titillium Web font files
@@ -28,4 +29,6 @@ To preview locally, open `index.html` in a browser.
 ## Credits
 
 - Design, content and code by Sanaz Katpitia, with help from an AI coding assistant (Claude), as allowed by the assignment.
-- The rosso corsa red, black and white are inspired by Ferrari's colours. No team or Formula 1 logos or trademarks are used.
+- The rosso corsa red, black and white are inspired by Ferrari's colours. The site's design uses no team or Formula 1 logos.
+- All three paintings are my own. "The water lily pond" and "Sailboats" are my versions of paintings by Claude Monet. "Car 16" is my painting of Charles Leclerc's Ferrari; the sponsor names on it are painted by hand as part of the artwork, and belong to their owners.
+- The quote "Ask a child to draw a car, and certainly he will draw it red." is attributed to Enzo Ferrari.
