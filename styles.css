@@ -1239,6 +1239,43 @@ html::-webkit-scrollbar {
   }
 }
 
+/* Laptops and desktops: a bigger circuit and car */
+@media (min-width: 64rem) {
+  .track {
+    --kerb-w: 44;
+    --asphalt-w: 30;
+    right: 0.6rem;
+    width: 96px;
+  }
+
+  .track__map .track__kerb--white {
+    stroke-dasharray: 9 9;
+  }
+
+  .track__car-pos {
+    width: 22px;
+    height: 54px;
+    margin: -27px 0 0 -11px;
+  }
+
+  .track__car-turn {
+    transform: translateX(4px) rotate(0deg);
+  }
+
+  .track[data-dir='up'] .track__car-turn {
+    transform: translateX(-4px) rotate(180deg);
+  }
+
+  .track__car {
+    width: 22px;
+    height: 54px;
+  }
+
+  #top {
+    padding-right: 7rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .track__car-turn {
     transition: none;
