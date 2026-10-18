@@ -164,19 +164,25 @@ function timingTower() {
 }
 
 // ---------- Race-track scroll bar ----------
-// The car follows the circuit drawn in the SVG: scroll progress becomes distance along the track,
-// and the car is rotated to the direction of the track at that point, so it steers through the corners.
+// The scroll bar is a closed circuit: two thin carriageways either side of a winding centre line,
+// joined by a hairpin at each end, with grass in the middle. Scrolling down drives the car down the
+// left side; scrolling up, it U-turns and drives back up the right side. At either end of the page
+// it takes the hairpin by itself, so a lap always finishes back on the start line.
 function raceTrack() {
   const track = document.querySelector('[data-track]');
   const car = document.querySelector('[data-car]');
   const path = document.querySelector('[data-path]');
-  if (!track || !car || !path) return;
+  const map = document.querySelector('[data-map]');
+  if (!track || !car || !path || !map) return;
+  const startLine = map.querySelector('[data-start-line]');
   const doc = document.documentElement;
   const VIEW_W = 60;
-  const VIEW_H = 1000;
+  const CENTRE = VIEW_W / 2;
+  const Y_TOP = 20; // the centre line runs from y 20 to y 980 on its 60 x 1000 design grid
+  const Y_BOTTOM = 980;
   const total = path.getTotalLength();
 
-  // Sample the circuit once, so scrolling never has to measure the path again
+  // Sample the centre line once, so scrolling never has to measure the path again
   const SAMPLES = 500;
   const pts = [];
   for (let i = 0; i <= SAMPLES; i++) {
@@ -187,40 +193,29 @@ function raceTrack() {
   const SMOOTH = 30;
   const smoothX = pts.map((_, i) => {
     let sum = 0;
-    let n = 0;
-    for (let j = i - SMOOTH; j <= i + SMOOTH; j++) {
-      const q = pts[Math.min(SAMPLES, Math.max(0, j))];
-      sum += q.x;
-      n++;
-    }
-    return sum / n;
+    for (let j = i - SMOOTH; j <= i + SMOOTH; j++) sum += pts[Math.min(SAMPLES, Math.max(0, j))].x;
+    return sum / (2 * SMOOTH + 1);
   });
   pts.forEach((p, i) => { p.x = smoothX[i]; });
 
-  // Redraw the circuit at the track's real pixel size, so kerb stripes and corners keep their shape.
-  // The circuit is a closed loop: two thin carriageways either side of the winding centre line,
-  // joined by a hairpin at each end. The car drives down the left side and back up the right.
-  const map = document.querySelector('[data-map]');
-  const startLine = map.querySelector('[data-start-line]');
-  // --sway narrows the corners and --lane is half the gap between the two sides (both in styles.css)
-  const CENTRE = VIEW_W / 2;
   const cssNum = (name, fallback) => parseFloat(getComputedStyle(track).getPropertyValue(name)) || fallback;
-  const swayX = (x, k) => CENTRE + (x - CENTRE) * k;
   const fmt = (p) => p.x.toFixed(2) + ' ' + p.y.toFixed(2);
+
+  // Current layout in screen pixels, rebuilt whenever the track changes size
+  let geo = null;
+
   // How far the corners can swing at this size: as much as --sway allows, but never so sharp that
-  // the inside of a bend pinches, and never wider than the track's box. Worked out once per size.
-  const fitSway = (w, h, kMax, lane, kerb) => {
+  // the inside of a bend pinches, and never wider than the track's box.
+  const fitSway = (w, kMax, lane, kerb, toY) => {
     const sx = w / VIEW_W;
-    const sy = h / VIEW_H;
     const needR = lane + kerb / 2 + 10;
     const room = w / 2 - lane - kerb / 2;
     const ok = (k) => {
       let maxCurv = 0;
       let dev = 0;
       for (let i = 1; i < SAMPLES; i++) {
-        const p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1];
-        const x0 = (p0.x - CENTRE) * k * sx, x1 = (p1.x - CENTRE) * k * sx, x2 = (p2.x - CENTRE) * k * sx;
-        const y0 = p0.y * sy, y1 = p1.y * sy, y2 = p2.y * sy;
+        const x0 = (pts[i - 1].x - CENTRE) * k * sx, x1 = (pts[i].x - CENTRE) * k * sx, x2 = (pts[i + 1].x - CENTRE) * k * sx;
+        const y0 = toY(pts[i - 1].y), y1 = toY(pts[i].y), y2 = toY(pts[i + 1].y);
         const dx = (x2 - x0) / 2, dy = (y2 - y0) / 2;
         const ddx = x2 - 2 * x1 + x0, ddy = y2 - 2 * y1 + y0;
         const c = Math.abs(dx * ddy - dy * ddx) / Math.pow(dx * dx + dy * dy, 1.5);
@@ -238,32 +233,36 @@ function raceTrack() {
     return lo;
   };
 
-  let drawnFor = '';
-  let fitK = 1;
-  const draw = (w, h, kMax) => {
-    const lane = cssNum('--lane', 10);
+  const layout = () => {
+    const w = track.clientWidth;
+    const h = track.clientHeight;
+    const lane = cssNum('--lane', 10); // half the distance between the two sides
     const road = cssNum('--asphalt-w', 10);
     const kerb = cssNum('--kerb-w', road);
-    const key = [w, h, kMax, lane, road, kerb].join('x');
-    if (key === drawnFor) return fitK;
-    drawnFor = key;
-    const k = (fitK = fitSway(w, h, kMax, lane, kerb));
+    const kMax = cssNum('--sway', 1);
+    const key = [w, h, lane, road, kerb, kMax].join('x');
+    if (geo && geo.key === key) return geo;
+
+    // Leave room above and below for the hairpins, so they never run off the end of the track
+    const pad = lane + kerb / 2 + 3;
+    const toY = (y) => pad + ((y - Y_TOP) / (Y_BOTTOM - Y_TOP)) * (h - 2 * pad);
+    const k = fitSway(w, kMax, lane, kerb, toY);
     const sx = w / VIEW_W;
-    const sy = h / VIEW_H;
-    map.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    const centre = pts.map((p) => ({ x: swayX(p.x, k) * sx, y: p.y * sy }));
+    const C = pts.map((p) => ({ x: (CENTRE + (p.x - CENTRE) * k) * sx, y: toY(p.y) }));
+    const T = [];
+    const N = [];
+    for (let i = 0; i <= SAMPLES; i++) {
+      const a = C[Math.max(0, i - 2)];
+      const b = C[Math.min(SAMPLES, i + 2)];
+      const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+      T.push({ x: (b.x - a.x) / len, y: (b.y - a.y) / len }); // direction of travel down the page
+      N.push({ x: (b.y - a.y) / len, y: -(b.x - a.x) / len }); // points to the right-hand side
+    }
     const left = [];
     const right = [];
     for (let i = 0; i <= SAMPLES; i += 2) {
-      const a = centre[Math.max(0, i - 2)];
-      const b = centre[Math.min(SAMPLES, i + 2)];
-      const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
-      // Unit normal pointing to the right of the screen while the line runs downwards
-      const nx = (b.y - a.y) / len;
-      const ny = -(b.x - a.x) / len;
-      const c = centre[i];
-      left.push({ x: c.x - nx * lane, y: c.y - ny * lane });
-      right.push({ x: c.x + nx * lane, y: c.y + ny * lane });
+      left.push({ x: C[i].x - N[i].x * lane, y: C[i].y - N[i].y * lane });
+      right.push({ x: C[i].x + N[i].x * lane, y: C[i].y + N[i].y * lane });
     }
     const arc = `A ${lane} ${lane} 0 0 0 `;
     const loop =
@@ -271,47 +270,107 @@ function raceTrack() {
       ' ' + arc + fmt(right[right.length - 1]) +
       ' L ' + right.slice().reverse().map(fmt).join(' L ') +
       ' ' + arc + fmt(left[0]) + ' Z';
+    map.setAttribute('viewBox', `0 0 ${w} ${h}`);
     map.querySelectorAll('[data-draw]').forEach((el) => el.setAttribute('d', loop));
     if (startLine) {
-      const s0 = left[8];
+      // The start and finish line, across the left side just below the top hairpin
+      const s0 = left[0];
       startLine.setAttribute('x', (s0.x - road / 2).toFixed(2));
-      startLine.setAttribute('y', s0.y.toFixed(2));
+      startLine.setAttribute('y', (s0.y + 2).toFixed(2));
       startLine.setAttribute('width', road.toFixed(2));
       startLine.setAttribute('height', '6');
     }
-    return k;
+    geo = { key, h, pad, lane, C, T, N };
+    return geo;
   };
 
-  let last = window.scrollY;
-  let queued = false;
-  const maxScroll = () => Math.max(0, doc.scrollHeight - window.innerHeight);
+  // ----- Driving -----
+  // side: -1 on the left (driving down), +1 on the right (driving up).
+  // A U-turn is a half circle across the grass, ahead of the car, from one side to the other.
+  let side = -1;
+  let turn = null; // { from, start } while a U-turn is under way
+  let wanted = 'down'; // the direction the visitor last scrolled
+  const TURN_MS = 650;
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const maxScroll = () => Math.max(0, doc.scrollHeight - window.innerHeight);
+  const progress = () => {
+    const max = maxScroll();
+    return max ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+  };
+
+  // Position on the loop for the car at sample i: on a side, or part-way through a U-turn (u from 0 to 1)
+  const pose = (g, i, fromSide, u) => {
+    const c = g.C[i], t = g.T[i], n = g.N[i];
+    const ahead = fromSide < 0 ? 1 : -1; // driving down on the left, up on the right
+    const at = (uu) => {
+      const th = Math.PI * uu;
+      const across = fromSide * Math.cos(th) * g.lane; // from fromSide over to the other side
+      const fwd = ahead * Math.sin(th) * g.lane;
+      return { x: c.x + n.x * across + t.x * fwd, y: c.y + n.y * across + t.y * fwd };
+    };
+    const p = at(u);
+    let dx, dy;
+    if (u <= 0 || u >= 1) {
+      const dir = (u >= 1 ? -fromSide : fromSide) < 0 ? 1 : -1;
+      dx = t.x * dir;
+      dy = t.y * dir;
+    } else {
+      const q = at(Math.min(1, u + 0.01));
+      dx = q.x - p.x;
+      dy = q.y - p.y;
+    }
+    // The car is drawn nose-up, so add 90 degrees to point it along its direction of travel
+    return { x: p.x, y: p.y, angle: (Math.atan2(dy, dx) * 180) / Math.PI + 90 };
+  };
+
+  const startTurn = () => {
+    if (turn) return;
+    if (reduceMotion()) { side = -side; return; }
+    turn = { from: side, start: performance.now() };
+  };
+
+  let queued = false;
   const place = () => {
     queued = false;
-    const w = track.clientWidth;
-    const h = track.clientHeight;
-    const sx = w / VIEW_W;
-    const sy = h / VIEW_H;
-    const k = draw(w, h, cssNum('--sway', 1));
-    const max = maxScroll();
-    const progress = max ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    const i = Math.round(progress * SAMPLES);
-    const a = pts[Math.max(0, i - 3)];
-    const b = pts[Math.min(SAMPLES, i + 3)];
-    const here = pts[i];
-    // Direction of travel in screen pixels. The car is drawn nose-up (-90 degrees), so add 90 to point it along the track
-    const angle = (Math.atan2((b.y - a.y) * sy, (b.x - a.x) * k * sx) * 180) / Math.PI + 90;
-    car.style.transform = `translate(${swayX(here.x, k) * sx}px, ${here.y * sy}px) rotate(${angle}deg)`;
-    const y = window.scrollY;
-    if (y > last + 1) track.dataset.dir = 'down';
-    else if (y < last - 1) track.dataset.dir = 'up';
-    last = y;
-  };
-  const queue = () => {
-    if (!queued) { queued = true; requestAnimationFrame(place); }
-  };
+    const g = layout();
+    const p = progress();
+    const i = Math.round(p * SAMPLES);
 
-  window.addEventListener('scroll', queue, { passive: true });
+    if (turn) {
+      const u = Math.min(1, (performance.now() - turn.start) / TURN_MS);
+      const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; // ease in and out
+      const ps = pose(g, i, turn.from, e);
+      car.style.transform = `translate(${ps.x}px, ${ps.y}px) rotate(${ps.angle}deg)`;
+      if (u < 1) { queue(); return; }
+      side = -turn.from;
+      turn = null;
+    }
+
+    // At either end of the page the car takes the hairpin, so a lap always finishes on the start line
+    if (p >= 0.999) wanted = 'up';
+    if (p <= 0.001) wanted = 'down';
+    if ((wanted === 'up') !== (side > 0)) {
+      startTurn();
+      if (turn) { queue(); return; }
+    }
+
+    const ps = pose(g, i, side, 0);
+    car.style.transform = `translate(${ps.x}px, ${ps.y}px) rotate(${ps.angle}deg)`;
+    track.dataset.dir = side < 0 ? 'down' : 'up';
+  };
+  function queue() {
+    if (!queued) { queued = true; requestAnimationFrame(place); }
+  }
+
+  let last = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > last + 1) wanted = 'down';
+    else if (y < last - 1) wanted = 'up';
+    last = y;
+    queue();
+  }, { passive: true });
   window.addEventListener('resize', queue);
   track.dataset.dir = 'down';
   place();
@@ -319,11 +378,12 @@ function raceTrack() {
   // Drag the car, or click on the track, to scroll like a normal scroll bar.
   // The circuit only ever runs downwards, so the nearest sample by height gives the progress.
   const scrollToPointer = (clientY) => {
+    const g = layout();
     const rect = track.getBoundingClientRect();
-    const y = ((clientY - rect.top) / rect.height) * VIEW_H;
+    const y = clientY - rect.top;
     let best = 0;
     for (let i = 1; i <= SAMPLES; i++) {
-      if (Math.abs(pts[i].y - y) < Math.abs(pts[best].y - y)) best = i;
+      if (Math.abs(g.C[i].y - y) < Math.abs(g.C[best].y - y)) best = i;
     }
     window.scrollTo({ top: (best / SAMPLES) * maxScroll(), behavior: 'instant' }); // follow the pointer exactly
   };
