@@ -965,6 +965,33 @@ a {
   }
 }
 
+/* Laptops: classified and still-racing projects sit side by side as cards, so wide screens aren't half empty */
+@media (min-width: 64rem) {
+  .results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    gap: 1.25rem;
+    border-top: 0;
+  }
+
+  .result {
+    align-content: start;
+    padding: 1.25rem 1.25rem 0.75rem 1rem;
+    background: var(--carbon-2);
+    border-bottom: 0;
+    border-top: 3px solid var(--asphalt);
+    border-radius: 6px;
+  }
+
+  .results--live .result {
+    border-top-color: var(--green);
+  }
+
+  .result__body {
+    max-width: none;
+  }
+}
+
 /* Contact */
 
 .radio {
@@ -1034,6 +1061,30 @@ a {
 
 .channel:hover .channel__value {
   color: var(--chalk);
+}
+
+/* Laptops: the radio message and the contact links side by side */
+@media (min-width: 64rem) {
+  #radio {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
+  }
+
+  #radio .session__head {
+    grid-column: 1 / -1;
+  }
+
+  #radio .radio,
+  #radio .channels {
+    max-width: none;
+    margin-bottom: 0;
+  }
+
+  #radio .radio__msg {
+    font-size: clamp(1.4rem, 2vw, 2rem);
+  }
 }
 
 /* Footer */
