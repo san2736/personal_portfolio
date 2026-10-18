@@ -510,7 +510,6 @@ a {
 
 .session {
   padding: clamp(3.5rem, 9vw, 7rem) var(--gutter) 0;
-  max-width: 72rem;
 }
 
 .session__head {
@@ -1046,7 +1045,6 @@ a {
   gap: 0.5rem 2rem;
   margin-top: clamp(4rem, 10vw, 7rem);
   padding: 1.5rem var(--gutter) 2rem;
-  max-width: 72rem;
   font-size: 0.95rem;
   color: var(--steel);
   border-top: 1px solid var(--asphalt);
@@ -1242,37 +1240,37 @@ html::-webkit-scrollbar {
 /* Laptops and desktops: a bigger circuit and car */
 @media (min-width: 64rem) {
   .track {
-    --kerb-w: 44;
-    --asphalt-w: 30;
-    right: 0.6rem;
-    width: 96px;
+    --kerb-w: 56;
+    --asphalt-w: 38;
+    right: 0.75rem;
+    width: 124px;
   }
 
   .track__map .track__kerb--white {
-    stroke-dasharray: 9 9;
+    stroke-dasharray: 11 11;
   }
 
   .track__car-pos {
-    width: 22px;
-    height: 54px;
-    margin: -27px 0 0 -11px;
+    width: 26px;
+    height: 64px;
+    margin: -32px 0 0 -13px;
   }
 
   .track__car-turn {
-    transform: translateX(4px) rotate(0deg);
+    transform: translateX(5px) rotate(0deg);
   }
 
   .track[data-dir='up'] .track__car-turn {
-    transform: translateX(-4px) rotate(180deg);
+    transform: translateX(-5px) rotate(180deg);
   }
 
   .track__car {
-    width: 22px;
-    height: 54px;
+    width: 26px;
+    height: 64px;
   }
 
   #top {
-    padding-right: 7rem;
+    padding-right: 8.5rem;
   }
 }
 
