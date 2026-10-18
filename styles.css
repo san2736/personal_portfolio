@@ -1119,15 +1119,16 @@ html::-webkit-scrollbar {
 }
 
 .track {
-  --kerb-w: 56;
-  --asphalt-w: 46;
-  --sway: 0.5;
+  --kerb-w: 32;
+  --asphalt-w: 24;
+  --sway: 0.5; /* the most the corners may swing; script.js eases off if a bend would get too tight */
+  --lane: 22; /* half the distance between the two sides of the loop */
   position: fixed;
   z-index: 40;
   top: calc(var(--bar-h) + 0.6rem); /* below the menu bar on phones and tablets */
   bottom: 0.6rem;
   right: 2px;
-  width: 80px;
+  width: 92px;
   cursor: grab;
   touch-action: none; /* lets a finger drag the car instead of scrolling the page */
 }
@@ -1150,6 +1151,11 @@ html::-webkit-scrollbar {
   stroke-linejoin: round;
 }
 
+/* The infield inside the loop is grass, so the two sides read as separate roads */
+.track__map .track__kerb:not(.track__kerb--white) {
+  fill: #173a22;
+}
+
 .track__map .track__kerb {
   stroke: var(--rosso);
   stroke-width: var(--kerb-w);
@@ -1157,7 +1163,7 @@ html::-webkit-scrollbar {
 
 .track__map .track__kerb--white {
   stroke: #f3f3f0;
-  stroke-dasharray: 7 7;
+  stroke-dasharray: 6 6;
   stroke-linecap: butt; /* round caps would fill the red gaps */
 }
 
@@ -1172,47 +1178,48 @@ html::-webkit-scrollbar {
   position: absolute;
   top: 0;
   left: 0;
-  width: 30px;
-  height: 72px;
-  margin: -36px 0 0 -15px;
+  width: 26px;
+  height: 62px;
+  margin: -31px 0 0 -13px;
   will-change: transform;
 }
 
 /* The U-turn: swap lanes and spin round when the scroll direction changes */
 .track__car-turn {
-  transform: translateX(6px) rotate(0deg);
-  transition: transform 0.45s cubic-bezier(0.5, 0, 0.3, 1);
+  transform: translateX(calc(var(--lane) * 1px)) rotate(0deg);
+  transition: transform 0.55s cubic-bezier(0.5, 0, 0.3, 1);
 }
 
 .track[data-dir='up'] .track__car-turn {
-  transform: translateX(-6px) rotate(180deg);
+  transform: translateX(calc(var(--lane) * -1px)) rotate(180deg);
 }
 
 .track__car {
   display: block;
-  width: 30px;
-  height: 72px;
+  width: 26px;
+  height: 62px;
   filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.6));
 }
 
 /* Keep the page content clear of the track */
 #top {
-  padding-right: 4.25rem;
+  padding-right: 5rem;
 }
 
 @media (min-width: 48rem) {
   .track {
-    --kerb-w: 64;
-    --asphalt-w: 52;
-    --sway: 0.7;
+    --kerb-w: 40;
+    --asphalt-w: 30;
+    --sway: 0.6;
+    --lane: 27;
     top: calc(var(--bar-h) + 1rem);
     bottom: 1rem;
     right: 0.4rem;
-    width: 112px;
+    width: 128px;
   }
 
   .track__map .track__kerb--white {
-    stroke-dasharray: 9 9;
+    stroke-dasharray: 7 7;
   }
 
   .track__car-pos {
@@ -1221,36 +1228,29 @@ html::-webkit-scrollbar {
     margin: -36px 0 0 -15px;
   }
 
-  .track__car-turn {
-    transform: translateX(8px) rotate(0deg);
-  }
-
-  .track[data-dir='up'] .track__car-turn {
-    transform: translateX(-8px) rotate(180deg);
-  }
-
   .track__car {
     width: 30px;
     height: 72px;
   }
 
   #top {
-    padding-right: 7.5rem;
+    padding-right: 8.5rem;
   }
 }
 
 /* Laptops and desktops: a bigger circuit and car */
 @media (min-width: 64rem) {
   .track {
-    --kerb-w: 72;
-    --asphalt-w: 56;
-    --sway: 0.8;
+    --kerb-w: 44;
+    --asphalt-w: 34;
+    --sway: 0.7;
+    --lane: 30;
     right: 0.75rem;
-    width: 140px;
+    width: 160px;
   }
 
   .track__map .track__kerb--white {
-    stroke-dasharray: 11 11;
+    stroke-dasharray: 8 8;
   }
 
   .track__car-pos {
@@ -1259,21 +1259,13 @@ html::-webkit-scrollbar {
     margin: -36px 0 0 -15px;
   }
 
-  .track__car-turn {
-    transform: translateX(9px) rotate(0deg);
-  }
-
-  .track[data-dir='up'] .track__car-turn {
-    transform: translateX(-9px) rotate(180deg);
-  }
-
   .track__car {
     width: 30px;
     height: 72px;
   }
 
   #top {
-    padding-right: 9.5rem;
+    padding-right: 10.75rem;
   }
 }
 

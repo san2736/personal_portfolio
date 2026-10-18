@@ -374,7 +374,7 @@
       </footer>
     </main>
 
-    <!-- Scroll bar as a race track: the car follows the circuit as you scroll, and turns round when you scroll back up -->
+    <!-- Scroll bar as a race circuit: the car drives down one side as you scroll, and swings across to come back up the other -->
     <div class="track" data-track aria-hidden="true">
       <!-- The circuit is designed on a 60 x 1000 grid; script.js redraws it at the track's real size -->
       <svg class="track__map" data-map>
@@ -389,8 +389,7 @@
         <path class="track__kerb" data-draw />
         <path class="track__kerb track__kerb--white" data-draw />
         <path class="track__asphalt" data-draw />
-        <rect data-rect="21 25 18 7" fill="url(#chequer)" />
-        <rect data-rect="21 968 18 7" fill="url(#chequer)" />
+        <rect data-start-line fill="url(#chequer)" />
       </svg>
       <div class="track__car-pos" data-car>
         <div class="track__car-turn">

@@ -3,7 +3,7 @@
 My personal portfolio site, built around the thing I watch every race weekend: a Formula 1 start.
 The page opens on the grid as car 27. Press start, the grid holds revs while five red lights come on, each with a tone, and once they go out and the field launches, the rest of the site runs like a race weekend:
 practice (about me), qualifying (skills), the race (projects) and team radio (contact).
-The scroll bar is a winding race track: a red car follows the circuit as you scroll, and turns round when you scroll back up.
+The scroll bar is a race circuit: a closed loop with a grass infield and kerbs, where a red car drives down one side as you scroll and swings across to drive back up the other side when you scroll up.
 
 **Live site:** https://san2736.github.io/personal_portfolio/
 

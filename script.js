@@ -183,39 +183,103 @@ function raceTrack() {
     const p = path.getPointAtLength((i / SAMPLES) * total);
     pts.push({ x: p.x, y: p.y });
   }
+  // Round off the tightest corners, so the two sides of the loop never pinch into a point
+  const SMOOTH = 30;
+  const smoothX = pts.map((_, i) => {
+    let sum = 0;
+    let n = 0;
+    for (let j = i - SMOOTH; j <= i + SMOOTH; j++) {
+      const q = pts[Math.min(SAMPLES, Math.max(0, j))];
+      sum += q.x;
+      n++;
+    }
+    return sum / n;
+  });
+  pts.forEach((p, i) => { p.x = smoothX[i]; });
 
-  // Redraw the circuit at the track's real pixel size, so kerb stripes and corners keep their shape
+  // Redraw the circuit at the track's real pixel size, so kerb stripes and corners keep their shape.
+  // The circuit is a closed loop: two thin carriageways either side of the winding centre line,
+  // joined by a hairpin at each end. The car drives down the left side and back up the right.
   const map = document.querySelector('[data-map]');
-  const original = path.getAttribute('d');
-  // --sway (set in styles.css) narrows the corners, so a big car still fits a narrow track on phones
+  const startLine = map.querySelector('[data-start-line]');
+  // --sway narrows the corners and --lane is half the gap between the two sides (both in styles.css)
   const CENTRE = VIEW_W / 2;
-  const getSway = () => parseFloat(getComputedStyle(track).getPropertyValue('--sway')) || 1;
+  const cssNum = (name, fallback) => parseFloat(getComputedStyle(track).getPropertyValue(name)) || fallback;
   const swayX = (x, k) => CENTRE + (x - CENTRE) * k;
-  const scalePath = (d, sx, sy, k) => {
-    let isX = true;
-    return d.replace(/-?\d+(\.\d+)?/g, (n) => {
-      const v = isX ? swayX(parseFloat(n), k) * sx : parseFloat(n) * sy;
-      isX = !isX;
-      return v.toFixed(2);
-    });
+  const fmt = (p) => p.x.toFixed(2) + ' ' + p.y.toFixed(2);
+  // How far the corners can swing at this size: as much as --sway allows, but never so sharp that
+  // the inside of a bend pinches, and never wider than the track's box. Worked out once per size.
+  const fitSway = (w, h, kMax, lane, kerb) => {
+    const sx = w / VIEW_W;
+    const sy = h / VIEW_H;
+    const needR = lane + kerb / 2 + 10;
+    const room = w / 2 - lane - kerb / 2;
+    const ok = (k) => {
+      let maxCurv = 0;
+      let dev = 0;
+      for (let i = 1; i < SAMPLES; i++) {
+        const p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1];
+        const x0 = (p0.x - CENTRE) * k * sx, x1 = (p1.x - CENTRE) * k * sx, x2 = (p2.x - CENTRE) * k * sx;
+        const y0 = p0.y * sy, y1 = p1.y * sy, y2 = p2.y * sy;
+        const dx = (x2 - x0) / 2, dy = (y2 - y0) / 2;
+        const ddx = x2 - 2 * x1 + x0, ddy = y2 - 2 * y1 + y0;
+        const c = Math.abs(dx * ddy - dy * ddx) / Math.pow(dx * dx + dy * dy, 1.5);
+        if (c > maxCurv) maxCurv = c;
+        if (Math.abs(x1) > dev) dev = Math.abs(x1);
+      }
+      return dev <= room && (maxCurv === 0 || 1 / maxCurv >= needR);
+    };
+    if (ok(kMax)) return kMax;
+    let lo = 0, hi = kMax;
+    for (let n = 0; n < 14; n++) {
+      const mid = (lo + hi) / 2;
+      if (ok(mid)) lo = mid; else hi = mid;
+    }
+    return lo;
   };
+
   let drawnFor = '';
-  const draw = (w, h, k) => {
-    const key = w + 'x' + h + 'x' + k;
-    if (key === drawnFor) return;
+  let fitK = 1;
+  const draw = (w, h, kMax) => {
+    const lane = cssNum('--lane', 10);
+    const road = cssNum('--asphalt-w', 10);
+    const kerb = cssNum('--kerb-w', road);
+    const key = [w, h, kMax, lane, road, kerb].join('x');
+    if (key === drawnFor) return fitK;
     drawnFor = key;
+    const k = (fitK = fitSway(w, h, kMax, lane, kerb));
     const sx = w / VIEW_W;
     const sy = h / VIEW_H;
     map.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    const d = scalePath(original, sx, sy, k);
-    map.querySelectorAll('[data-draw]').forEach((el) => el.setAttribute('d', d));
-    map.querySelectorAll('[data-rect]').forEach((el) => {
-      const [x, y, rw, rh] = el.dataset.rect.split(' ').map(Number);
-      el.setAttribute('x', (x * sx).toFixed(2));
-      el.setAttribute('y', (y * sy).toFixed(2));
-      el.setAttribute('width', (rw * sx).toFixed(2));
-      el.setAttribute('height', (rh * sy).toFixed(2));
-    });
+    const centre = pts.map((p) => ({ x: swayX(p.x, k) * sx, y: p.y * sy }));
+    const left = [];
+    const right = [];
+    for (let i = 0; i <= SAMPLES; i += 2) {
+      const a = centre[Math.max(0, i - 2)];
+      const b = centre[Math.min(SAMPLES, i + 2)];
+      const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+      // Unit normal pointing to the right of the screen while the line runs downwards
+      const nx = (b.y - a.y) / len;
+      const ny = -(b.x - a.x) / len;
+      const c = centre[i];
+      left.push({ x: c.x - nx * lane, y: c.y - ny * lane });
+      right.push({ x: c.x + nx * lane, y: c.y + ny * lane });
+    }
+    const arc = `A ${lane} ${lane} 0 0 0 `;
+    const loop =
+      'M ' + left.map(fmt).join(' L ') +
+      ' ' + arc + fmt(right[right.length - 1]) +
+      ' L ' + right.slice().reverse().map(fmt).join(' L ') +
+      ' ' + arc + fmt(left[0]) + ' Z';
+    map.querySelectorAll('[data-draw]').forEach((el) => el.setAttribute('d', loop));
+    if (startLine) {
+      const s0 = left[8];
+      startLine.setAttribute('x', (s0.x - road / 2).toFixed(2));
+      startLine.setAttribute('y', s0.y.toFixed(2));
+      startLine.setAttribute('width', road.toFixed(2));
+      startLine.setAttribute('height', '6');
+    }
+    return k;
   };
 
   let last = window.scrollY;
@@ -228,8 +292,7 @@ function raceTrack() {
     const h = track.clientHeight;
     const sx = w / VIEW_W;
     const sy = h / VIEW_H;
-    const k = getSway();
-    draw(w, h, k);
+    const k = draw(w, h, cssNum('--sway', 1));
     const max = maxScroll();
     const progress = max ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
     const i = Math.round(progress * SAMPLES);
