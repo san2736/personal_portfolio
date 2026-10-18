@@ -139,11 +139,8 @@ function startLights() {
 
   showSound();
   if (soundBtn) {
-    soundBtn.addEventListener('click', () => {
-      setSound(!soundOn);
-      // Turning sound on replays the start so you hear it straight away.
-      if (soundOn) startRace();
-    });
+    // Only switches the sound on or off for the next start; "Watch the start again" replays it.
+    soundBtn.addEventListener('click', () => setSound(!soundOn));
   }
 }
 
@@ -190,23 +187,27 @@ function raceTrack() {
   // Redraw the circuit at the track's real pixel size, so kerb stripes and corners keep their shape
   const map = document.querySelector('[data-map]');
   const original = path.getAttribute('d');
-  const scalePath = (d, sx, sy) => {
+  // --sway (set in styles.css) narrows the corners, so a big car still fits a narrow track on phones
+  const CENTRE = VIEW_W / 2;
+  const getSway = () => parseFloat(getComputedStyle(track).getPropertyValue('--sway')) || 1;
+  const swayX = (x, k) => CENTRE + (x - CENTRE) * k;
+  const scalePath = (d, sx, sy, k) => {
     let isX = true;
     return d.replace(/-?\d+(\.\d+)?/g, (n) => {
-      const v = parseFloat(n) * (isX ? sx : sy);
+      const v = isX ? swayX(parseFloat(n), k) * sx : parseFloat(n) * sy;
       isX = !isX;
       return v.toFixed(2);
     });
   };
   let drawnFor = '';
-  const draw = (w, h) => {
-    const key = w + 'x' + h;
+  const draw = (w, h, k) => {
+    const key = w + 'x' + h + 'x' + k;
     if (key === drawnFor) return;
     drawnFor = key;
     const sx = w / VIEW_W;
     const sy = h / VIEW_H;
     map.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    const d = scalePath(original, sx, sy);
+    const d = scalePath(original, sx, sy, k);
     map.querySelectorAll('[data-draw]').forEach((el) => el.setAttribute('d', d));
     map.querySelectorAll('[data-rect]').forEach((el) => {
       const [x, y, rw, rh] = el.dataset.rect.split(' ').map(Number);
@@ -227,7 +228,8 @@ function raceTrack() {
     const h = track.clientHeight;
     const sx = w / VIEW_W;
     const sy = h / VIEW_H;
-    draw(w, h);
+    const k = getSway();
+    draw(w, h, k);
     const max = maxScroll();
     const progress = max ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
     const i = Math.round(progress * SAMPLES);
@@ -235,8 +237,8 @@ function raceTrack() {
     const b = pts[Math.min(SAMPLES, i + 3)];
     const here = pts[i];
     // Direction of travel in screen pixels. The car is drawn nose-up (-90 degrees), so add 90 to point it along the track
-    const angle = (Math.atan2((b.y - a.y) * sy, (b.x - a.x) * sx) * 180) / Math.PI + 90;
-    car.style.transform = `translate(${here.x * sx}px, ${here.y * sy}px) rotate(${angle}deg)`;
+    const angle = (Math.atan2((b.y - a.y) * sy, (b.x - a.x) * k * sx) * 180) / Math.PI + 90;
+    car.style.transform = `translate(${swayX(here.x, k) * sx}px, ${here.y * sy}px) rotate(${angle}deg)`;
     const y = window.scrollY;
     if (y > last + 1) track.dataset.dir = 'down';
     else if (y < last - 1) track.dataset.dir = 'up';
